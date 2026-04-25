@@ -1,0 +1,36 @@
+{
+  "name": "mininook",
+  "version": "1.0.0",
+  "description": "Client Miniflux desktop/mobile — Flipboard-like RSS reader",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "license": "CECILL-2.1",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@tauri-apps/cli": "^2.10.1",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8",
+    "vue": "^3.5.32",
+    "vue-tsc": "^3.2.6"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@tanstack/vue-virtual": "^3.13.24",
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-shell": "^2.3.5",
+    "defuddle": "^0.17.0",
+    "pinia": "^3.0.4",
+    "vue-i18n": "9",
+    "vue-router": "^5.0.4",
+    "zod": "^4.3.6"
+  }
+}

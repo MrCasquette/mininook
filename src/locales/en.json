@@ -1,0 +1,143 @@
+{
+  "_meta": { "name": "English" },
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "errorUnknown": "Unknown error",
+    "errorConnection": "Connection error",
+    "errorGeneric": "Failed"
+  },
+  "login": {
+    "title": "MiniNook",
+    "subtitle": "Connect to your Miniflux server to get started.",
+    "serverLabel": "Server",
+    "serverPlaceholder": "https://miniflux.example.com",
+    "apiKeyLabel": "API Key",
+    "apiKeyPlaceholder": "Paste your key here",
+    "generateKey": "Generate on Miniflux",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "username",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "switchToBasic": "Local setup without OIDC? Use login + password",
+    "switchToToken": "Back to API key login",
+    "statusDisconnected": "Not connected",
+    "errorMissingUrl": "Please enter the server URL first.",
+    "errorBrowserOpen": "Could not open the browser",
+    "errorGeneric": "Connection failed"
+  },
+  "onboarding": {
+    "next": "Next",
+    "previous": "Previous",
+    "done": "Let's go",
+    "slides": [
+      {
+        "title": "Welcome to MiniNook",
+        "desc": "A clean RSS reader built on top of your Miniflux server. Here's what you can do in seconds."
+      },
+      {
+        "title": "Discover and subscribe to feeds",
+        "desc": "“Discover” tab to add suggested feeds in one click. “My feeds” tab to refresh or delete the ones you already follow."
+      },
+      {
+        "title": "Browse by category and filter",
+        "desc": "The category bar at the bottom filters by topic. At the top, two toggles: “🔒 paywall” to hide paid articles, “▦ dedup” to group cross-feed duplicates."
+      },
+      {
+        "title": "React and clean up",
+        "desc": "✓ Mark as read  •  ⭐ Read later  •  ✕ Not interested. Dismissed items land in “Discarded” and you can open the original from the article page."
+      },
+      {
+        "title": "Keep your feeds relevant",
+        "desc": "On “Discarded”, a chart shows which feeds generate the most noise. Unsubscribe directly from this view to clean up your feed."
+      }
+    ]
+  },
+  "nav": {
+    "feed": "Feed",
+    "register": "Discover",
+    "handle": "My feeds",
+    "bookmarks": "Read later",
+    "dismissed": "Discarded",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "languageLabel": "Language",
+    "languageHint": "The interface updates immediately."
+  },
+  "filters": {
+    "label": "Filters",
+    "paywallShow": "Show paywalled articles",
+    "paywallHide": "Hide paywalled articles",
+    "dedupOn": "Enable cross-feed deduplication",
+    "dedupOff": "Disable cross-feed deduplication"
+  },
+  "bottomNav": {
+    "all": "All"
+  },
+  "feed": {
+    "emptyNoFeeds": "No feeds subscribed",
+    "emptyNoFeedsHint": "Start with a selection of suggested feeds.",
+    "emptyNoFeedsCta": "Discover feeds",
+    "emptyAllRead": "Nothing to read",
+    "emptyAllReadHint": "All articles have been read.",
+    "endOfFeed": "End of feed"
+  },
+  "entryCard": {
+    "justNow": "Just now",
+    "hoursAgo": "{n}h ago",
+    "daysAgo": "{n}d ago",
+    "minutes": "{n} min",
+    "paywall": "Subscribers only",
+    "duplicates": "+{n} feeds",
+    "notInterested": "Not interested",
+    "bookmark": "Read later"
+  },
+  "article": {
+    "markRead": "Mark as read (r)",
+    "alreadyRead": "Already read",
+    "bookmark": "Read later (s)",
+    "openOriginal": "Open original",
+    "readingTime": "{n} min read",
+    "paywallTitle": "Subscribers only",
+    "paywallPartial": "The displayed content is partial.",
+    "paywallPartialPercent": "The displayed content is partial ({percent}% available).",
+    "paywallReadOnSite": "Read on the site"
+  },
+  "register": {
+    "title": "Discover",
+    "subtitle": "A selection of feeds to add to your Miniflux in one click.",
+    "subscribed": "Subscribed",
+    "subscribing": "Subscribing…",
+    "subscribe": "Subscribe"
+  },
+  "handle": {
+    "title": "My feeds",
+    "count": "{n} feeds subscribed.",
+    "empty": "No feeds subscribed yet.",
+    "discover": "Discover feeds",
+    "refresh": "Refresh",
+    "delete": "Delete",
+    "deleteConfirm": "Delete feed \"{title}\"?"
+  },
+  "bookmarks": {
+    "title": "Read later",
+    "empty": "No articles in your reading list",
+    "emptyHint": "Saved articles will appear here."
+  },
+  "dismissed": {
+    "title": "Discarded",
+    "empty": "No discarded articles",
+    "emptyHint": "Articles marked “not interested” will appear here.",
+    "noiseChart": "Noise by feed",
+    "unsubscribeFrom": "Unsubscribe from {name}"
+  }
+}

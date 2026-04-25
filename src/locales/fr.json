@@ -1,0 +1,143 @@
+{
+  "_meta": { "name": "Français" },
+  "common": {
+    "back": "Retour",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "confirm": "Confirmer",
+    "errorUnknown": "Erreur inconnue",
+    "errorConnection": "Erreur de connexion",
+    "errorGeneric": "Échec"
+  },
+  "login": {
+    "title": "MiniNook",
+    "subtitle": "Connecte-toi à ton serveur Miniflux pour commencer.",
+    "serverLabel": "Serveur",
+    "serverPlaceholder": "https://miniflux.example.com",
+    "apiKeyLabel": "Clé API",
+    "apiKeyPlaceholder": "Colle ta clé ici",
+    "generateKey": "Générer sur Miniflux",
+    "usernameLabel": "Identifiant",
+    "usernamePlaceholder": "username",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Se connecter",
+    "submitting": "Connexion…",
+    "switchToBasic": "Setup local sans OIDC ? Utiliser login + mot de passe",
+    "switchToToken": "Revenir à la connexion par clé API",
+    "statusDisconnected": "Non connecté",
+    "errorMissingUrl": "Renseigne d'abord l'URL du serveur.",
+    "errorBrowserOpen": "Impossible d'ouvrir le navigateur",
+    "errorGeneric": "Connexion impossible"
+  },
+  "onboarding": {
+    "next": "Suivant",
+    "previous": "Précédent",
+    "done": "C'est parti",
+    "slides": [
+      {
+        "title": "Bienvenue sur MiniNook",
+        "desc": "Un lecteur RSS clean construit au-dessus de ton serveur Miniflux. Voici ce que tu peux y faire en quelques secondes."
+      },
+      {
+        "title": "Découvre et abonne-toi à des flux",
+        "desc": "Onglet « Découvrir » pour ajouter en un clic des flux suggérés. Onglet « Mes flux » pour rafraîchir ou supprimer ce que tu suis déjà."
+      },
+      {
+        "title": "Parcours par catégorie et filtre",
+        "desc": "La barre de catégories en bas filtre par thématique. En haut, deux toggles : « 🔒 paywall » pour cacher les articles payants, « ▦ dédup » pour regrouper les doublons inter-feeds."
+      },
+      {
+        "title": "Réagis et nettoie",
+        "desc": "✓ Marquer comme lu  •  ⭐ Lire plus tard  •  ✕ Pas intéressé. Les articles écartés vont dans « Indésirables » et tu peux ouvrir l'original sur la page article."
+      },
+      {
+        "title": "Garde des flux pertinents",
+        "desc": "Sur « Indésirables », un graphique te montre quels flux te génèrent le plus de bruit. Désabonne-toi directement depuis cette vue pour assainir ton feed."
+      }
+    ]
+  },
+  "nav": {
+    "feed": "Liste",
+    "register": "Découvrir",
+    "handle": "Mes flux",
+    "bookmarks": "Lire plus tard",
+    "dismissed": "Indésirables",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "languageLabel": "Langue",
+    "languageHint": "L'interface s'adapte immédiatement."
+  },
+  "filters": {
+    "label": "Filtres",
+    "paywallShow": "Afficher les articles payants",
+    "paywallHide": "Masquer les articles payants",
+    "dedupOn": "Activer le regroupement des doublons",
+    "dedupOff": "Désactiver le regroupement des doublons"
+  },
+  "bottomNav": {
+    "all": "Tous"
+  },
+  "feed": {
+    "emptyNoFeeds": "Aucun flux abonné",
+    "emptyNoFeedsHint": "Démarre avec une sélection de flux suggérés.",
+    "emptyNoFeedsCta": "Découvrir des flux",
+    "emptyAllRead": "Rien à lire",
+    "emptyAllReadHint": "Tous les articles ont été lus.",
+    "endOfFeed": "Fin du flux"
+  },
+  "entryCard": {
+    "justNow": "À l'instant",
+    "hoursAgo": "Il y a {n}h",
+    "daysAgo": "Il y a {n}j",
+    "minutes": "{n} min",
+    "paywall": "Réservé aux abonnés",
+    "duplicates": "+{n} flux",
+    "notInterested": "Pas intéressé",
+    "bookmark": "Lire plus tard"
+  },
+  "article": {
+    "markRead": "Marquer comme lu (r)",
+    "alreadyRead": "Déjà lu",
+    "bookmark": "Lire plus tard (s)",
+    "openOriginal": "Ouvrir l'original",
+    "readingTime": "{n} min de lecture",
+    "paywallTitle": "Réservé aux abonnés",
+    "paywallPartial": "Le contenu affiché est partiel.",
+    "paywallPartialPercent": "Le contenu affiché est partiel ({percent}% disponible).",
+    "paywallReadOnSite": "Lire sur le site"
+  },
+  "register": {
+    "title": "Découvrir",
+    "subtitle": "Une sélection de flux à ajouter en un clic à ton Miniflux.",
+    "subscribed": "Abonné",
+    "subscribing": "Abonnement…",
+    "subscribe": "S'abonner"
+  },
+  "handle": {
+    "title": "Mes flux",
+    "count": "{n} flux abonnés.",
+    "empty": "Aucun flux abonné pour l'instant.",
+    "discover": "Découvrir des flux",
+    "refresh": "Actualiser",
+    "delete": "Supprimer",
+    "deleteConfirm": "Supprimer le flux \"{title}\" ?"
+  },
+  "bookmarks": {
+    "title": "Lire plus tard",
+    "empty": "Aucun article dans votre liste de lecture",
+    "emptyHint": "Les articles sauvegardés apparaîtront ici."
+  },
+  "dismissed": {
+    "title": "Indésirables",
+    "empty": "Aucun article écarté",
+    "emptyHint": "Les articles marqués « pas intéressé » apparaîtront ici.",
+    "noiseChart": "Bruit par flux",
+    "unsubscribeFrom": "Se désabonner de {name}"
+  }
+}

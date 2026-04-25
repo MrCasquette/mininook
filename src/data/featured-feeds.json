@@ -1,0 +1,104 @@
+[
+  {
+    "title": "Le Monde — Une",
+    "url": "https://www.lemonde.fr/rss/une.xml",
+    "siteUrl": "https://www.lemonde.fr",
+    "category": "Actu FR"
+  },
+  {
+    "title": "Le Figaro — Actualité",
+    "url": "https://www.lefigaro.fr/rss/figaro_actualites.xml",
+    "siteUrl": "https://www.lefigaro.fr",
+    "category": "Actu FR"
+  },
+  {
+    "title": "franceinfo — Les Titres",
+    "url": "https://www.franceinfo.fr/titres.rss",
+    "siteUrl": "https://www.franceinfo.fr",
+    "category": "Actu FR"
+  },
+  {
+    "title": "Le Monde — International",
+    "url": "https://www.lemonde.fr/international/rss_full.xml",
+    "siteUrl": "https://www.lemonde.fr/international",
+    "category": "Géopolitique"
+  },
+  {
+    "title": "Courrier international",
+    "url": "https://www.courrierinternational.com/feed/all/rss.xml",
+    "siteUrl": "https://www.courrierinternational.com",
+    "category": "Géopolitique"
+  },
+  {
+    "title": "Frandroid",
+    "url": "https://www.frandroid.com/feed",
+    "siteUrl": "https://www.frandroid.com",
+    "category": "Tech"
+  },
+  {
+    "title": "Next",
+    "url": "https://next.ink/feed/",
+    "siteUrl": "https://next.ink",
+    "category": "Tech"
+  },
+  {
+    "title": "Le Monde — Pixels",
+    "url": "https://www.lemonde.fr/pixels/rss_full.xml",
+    "siteUrl": "https://www.lemonde.fr/pixels",
+    "category": "Tech"
+  },
+  {
+    "title": "IGN France",
+    "url": "https://fr.ign.com/feed.xml",
+    "siteUrl": "https://fr.ign.com",
+    "category": "Gaming"
+  },
+  {
+    "title": "JeuxVideo.com",
+    "url": "https://www.jeuxvideo.com/rss/rss.xml",
+    "siteUrl": "https://www.jeuxvideo.com",
+    "category": "Gaming"
+  },
+  {
+    "title": "Canard PC",
+    "url": "https://www.canardpc.com/feed/",
+    "siteUrl": "https://www.canardpc.com",
+    "category": "Gaming"
+  },
+  {
+    "title": "Futura — Actualités",
+    "url": "https://www.futura-sciences.com/rss/actualites.xml",
+    "siteUrl": "https://www.futura-sciences.com",
+    "category": "Science"
+  },
+  {
+    "title": "Pour la Science",
+    "url": "https://www.pourlascience.fr/rss/all.xml",
+    "siteUrl": "https://www.pourlascience.fr",
+    "category": "Science"
+  },
+  {
+    "title": "Sciences et Avenir",
+    "url": "https://www.sciencesetavenir.fr/index/rss",
+    "siteUrl": "https://www.sciencesetavenir.fr",
+    "category": "Science"
+  },
+  {
+    "title": "Le Monde — Sciences",
+    "url": "https://www.lemonde.fr/sciences/rss_full.xml",
+    "siteUrl": "https://www.lemonde.fr/sciences",
+    "category": "Science"
+  },
+  {
+    "title": "Science étonnante",
+    "url": "https://scienceetonnante.com/feed/",
+    "siteUrl": "https://scienceetonnante.com",
+    "category": "Science"
+  },
+  {
+    "title": "CNRS Le journal",
+    "url": "https://lejournal.cnrs.fr/rss",
+    "siteUrl": "https://lejournal.cnrs.fr",
+    "category": "Science"
+  }
+]
