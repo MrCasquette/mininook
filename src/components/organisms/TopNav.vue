@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const navLinks = [
-  { name: 'feed', key: 'nav.feed' },
   { name: 'register', key: 'nav.register' },
   { name: 'handle', key: 'nav.handle' },
   { name: 'bookmarks', key: 'nav.bookmarks' },
@@ -15,16 +14,20 @@ const navLinks = [
 <template>
   <header class="sticky top-0 z-40 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl">
     <div class="mx-auto flex h-14 max-w-screen-2xl items-center gap-6 px-4 sm:px-6 lg:px-8">
-      <router-link to="/" class="shrink-0 text-lg font-semibold tracking-tight hover:text-white">
+      <router-link
+        :to="{ name: 'feed' }"
+        class="brand shrink-0 text-lg font-semibold tracking-tight text-zinc-300 transition-colors hover:text-white"
+        active-class="is-active"
+      >
         MiniNook
       </router-link>
-      <nav class="flex flex-1 items-center gap-5 overflow-x-auto text-sm font-medium">
+      <nav class="flex flex-1 items-center gap-1 overflow-x-auto text-sm font-medium">
         <router-link
           v-for="link in navLinks"
           :key="link.name"
           :to="{ name: link.name }"
-          class="shrink-0 text-zinc-400 transition-colors hover:text-zinc-100"
-          active-class="text-zinc-100"
+          class="nav-link relative shrink-0 px-2 py-2 text-zinc-400 transition-colors hover:text-zinc-100"
+          active-class="is-active"
         >
           {{ t(link.key) }}
         </router-link>
@@ -32,7 +35,7 @@ const navLinks = [
       <router-link
         :to="{ name: 'settings' }"
         class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
-        active-class="text-zinc-100"
+        active-class="!text-white"
         :title="t('nav.settings')"
         :aria-label="t('nav.settings')"
       >
@@ -55,3 +58,31 @@ const navLinks = [
     </div>
   </header>
 </template>
+
+<style scoped>
+.brand.is-active {
+  color: #fff;
+}
+
+.nav-link.is-active {
+  color: #fff;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: -1px;
+  height: 2px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+  border-radius: 1px;
+}
+
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+</style>

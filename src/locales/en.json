@@ -62,16 +62,23 @@
   },
   "nav": {
     "feed": "Feed",
-    "register": "Discover",
+    "register": "Suggestions",
     "handle": "My feeds",
-    "bookmarks": "Read later",
+    "bookmarks": "My list",
     "dismissed": "Discarded",
     "settings": "Settings"
   },
   "settings": {
     "title": "Settings",
     "languageLabel": "Language",
-    "languageHint": "The interface updates immediately."
+    "languageHint": "The interface updates immediately.",
+    "accountTitle": "Account",
+    "accountServerLabel": "Server",
+    "accountSchemeToken": "API Key",
+    "accountSchemeBasic": "Login + password",
+    "disconnect": "Sign out",
+    "disconnectConfirm": "Confirm sign out",
+    "disconnectHint": "You'll go back to the login screen."
   },
   "filters": {
     "label": "Filters",
@@ -113,7 +120,7 @@
     "paywallReadOnSite": "Read on the site"
   },
   "register": {
-    "title": "Discover",
+    "title": "Suggestions",
     "subtitle": "A selection of feeds to add to your Miniflux in one click.",
     "subscribed": "Subscribed",
     "subscribing": "Subscribing…",
@@ -129,7 +136,7 @@
     "deleteConfirm": "Delete feed \"{title}\"?"
   },
   "bookmarks": {
-    "title": "Read later",
+    "title": "My list",
     "empty": "No articles in your reading list",
     "emptyHint": "Saved articles will appear here."
   },

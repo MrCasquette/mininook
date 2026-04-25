@@ -62,16 +62,23 @@
   },
   "nav": {
     "feed": "Liste",
-    "register": "Découvrir",
+    "register": "Suggestions",
     "handle": "Mes flux",
-    "bookmarks": "Lire plus tard",
-    "dismissed": "Indésirables",
+    "bookmarks": "Ma liste",
+    "dismissed": "Écartés",
     "settings": "Paramètres"
   },
   "settings": {
     "title": "Paramètres",
     "languageLabel": "Langue",
-    "languageHint": "L'interface s'adapte immédiatement."
+    "languageHint": "L'interface s'adapte immédiatement.",
+    "accountTitle": "Compte",
+    "accountServerLabel": "Serveur",
+    "accountSchemeToken": "Clé API",
+    "accountSchemeBasic": "Login + mot de passe",
+    "disconnect": "Se déconnecter",
+    "disconnectConfirm": "Confirmer la déconnexion",
+    "disconnectHint": "Tu repasseras par l'écran de connexion."
   },
   "filters": {
     "label": "Filtres",
@@ -113,7 +120,7 @@
     "paywallReadOnSite": "Lire sur le site"
   },
   "register": {
-    "title": "Découvrir",
+    "title": "Suggestions",
     "subtitle": "Une sélection de flux à ajouter en un clic à ton Miniflux.",
     "subscribed": "Abonné",
     "subscribing": "Abonnement…",
@@ -129,12 +136,12 @@
     "deleteConfirm": "Supprimer le flux \"{title}\" ?"
   },
   "bookmarks": {
-    "title": "Lire plus tard",
+    "title": "Ma liste",
     "empty": "Aucun article dans votre liste de lecture",
     "emptyHint": "Les articles sauvegardés apparaîtront ici."
   },
   "dismissed": {
-    "title": "Indésirables",
+    "title": "Écartés",
     "empty": "Aucun article écarté",
     "emptyHint": "Les articles marqués « pas intéressé » apparaîtront ici.",
     "noiseChart": "Bruit par flux",
