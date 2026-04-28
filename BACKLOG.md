@@ -107,6 +107,24 @@ Persistance localStorage. Pas prioritaire.
 
 ---
 
+## UI primitives
+
+### Composant Tooltip custom (polish)
+
+**Quoi** : remplacer les attributs `title="..."` natifs par un vrai composant Tooltip Vue.
+
+**Pourquoi** : aujourd'hui chaque icône (refresh, delete, paywall, dedup, show-read, move-to, settings, etc.) repose sur l'attribut HTML `title`. Pratique mais visuellement pauvre : style imposé OS, délai d'apparition long (~700ms macOS), pas de positionnement contrôlé, pas accessible aux contrôles tactiles.
+
+**Scope** :
+- Composant `<Tooltip>` ou directive `v-tooltip` (Floating UI / @floating-ui/vue pour le placement intelligent)
+- Délai court (~150ms), placement auto (top par défaut), portal pour pas être clip par overflow
+- Migration de tous les `:title="..."` actuels vers le composant
+- Garder `aria-label` pour l'accessibilité
+
+**Quand** : à la fin du polish, juste avant la 1.0. Aucune urgence — `title` natif fait le job basique.
+
+---
+
 ## Iconographie
 
 ### E — Icône paywall multilingue

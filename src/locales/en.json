@@ -168,6 +168,14 @@
     "noiseChart": "Noise by feed",
     "unsubscribeFrom": "Unsubscribe from {name}"
   },
+  "search": {
+    "title": "Search",
+    "placeholder": "Title, content, author…",
+    "empty": "Type at least 2 characters to search.",
+    "noResults": "No results.",
+    "loading": "Searching…",
+    "results": "{n} result | {n} results"
+  },
   "categories": {
     "title": "Categories",
     "subtitle": "Organize your feeds into categories.",

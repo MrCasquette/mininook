@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import SearchModal from '@/components/organisms/SearchModal.vue';
 
 const { t } = useI18n();
 
@@ -9,6 +11,25 @@ const navLinks = [
   { name: 'bookmarks', key: 'nav.bookmarks' },
   { name: 'dismissed', key: 'nav.dismissed' },
 ] as const;
+
+const searchOpen = ref(false);
+
+function openSearch() {
+  searchOpen.value = true;
+}
+function closeSearch() {
+  searchOpen.value = false;
+}
+
+function onKeyDown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    searchOpen.value = !searchOpen.value;
+  }
+}
+
+onMounted(() => window.addEventListener('keydown', onKeyDown));
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown));
 </script>
 
 <template>
@@ -32,6 +53,27 @@ const navLinks = [
           {{ t(link.key) }}
         </router-link>
       </nav>
+      <button
+        type="button"
+        class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
+        :title="t('search.title')"
+        :aria-label="t('search.title')"
+        @click="openSearch"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      </button>
       <router-link
         :to="{ name: 'settings' }"
         class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
@@ -57,6 +99,7 @@ const navLinks = [
       </router-link>
     </div>
   </header>
+  <SearchModal :open="searchOpen" @close="closeSearch" />
 </template>
 
 <style scoped>

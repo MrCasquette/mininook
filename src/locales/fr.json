@@ -168,6 +168,14 @@
     "noiseChart": "Bruit par flux",
     "unsubscribeFrom": "Se désabonner de {name}"
   },
+  "search": {
+    "title": "Rechercher",
+    "placeholder": "Titre, contenu, auteur…",
+    "empty": "Tape au moins 2 caractères pour chercher.",
+    "noResults": "Aucun résultat.",
+    "loading": "Recherche…",
+    "results": "{n} résultat | {n} résultats"
+  },
   "categories": {
     "title": "Catégories",
     "subtitle": "Organise tes flux en catégories.",
