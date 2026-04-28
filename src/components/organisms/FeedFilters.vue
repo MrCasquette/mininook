@@ -9,7 +9,7 @@ const entriesStore = useEntriesStore();
 </script>
 
 <template>
-  <div class="sticky top-14 z-30 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl">
+  <div data-onboard="feed-filters" class="sticky top-14 z-30 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl">
     <div class="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
       <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500">{{ t('filters.label') }}</span>
       <div class="flex items-center gap-3">

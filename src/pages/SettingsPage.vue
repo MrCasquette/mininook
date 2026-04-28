@@ -45,7 +45,7 @@ function confirmDisconnect() {
 <template>
   <AppLayout>
     <div class="mx-auto max-w-xl pt-8">
-      <h1 class="text-2xl font-semibold tracking-tight text-zinc-100">
+      <h1 data-onboard="settings-page" class="text-2xl font-semibold tracking-tight text-zinc-100">
         {{ t('settings.title') }}
       </h1>
 

@@ -148,13 +148,14 @@ async function remove(feed: Feed) {
         </div>
         <router-link
           :to="{ name: 'categories' }"
+          data-onboard="manage-categories"
           class="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
         >
           {{ t('handle.manageCategories') }}
         </router-link>
       </header>
 
-      <div class="mb-8">
+      <div class="mb-8" data-onboard="add-feed">
         <AddFeedForm
           :categories="categories"
           :subscribed-urls="subscribedUrls"

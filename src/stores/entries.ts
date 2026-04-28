@@ -5,6 +5,7 @@ import { enrichEntry, buildFromRss } from '@/services/enricher';
 import { extractImageUrl } from '@/utils/extractImage';
 import { deduplicateEntries } from '@/utils/dedup';
 import { isGalleryContent } from '@/utils/detectGallery';
+import { useOnboardingStore } from '@/stores/onboarding';
 import type { Entry, Category, EntryStatus, Feed, FeedCounters } from '@/types/miniflux';
 import type { EntryMeta } from '@/types/meta';
 
@@ -89,16 +90,19 @@ export const useEntriesStore = defineStore('entries', () => {
   function toggleHidePaywall() {
     hidePaywall.value = !hidePaywall.value;
     localStorage.setItem('mininook_hide_paywall', String(hidePaywall.value));
+    useOnboardingStore().recordEvent('filter-toggled');
   }
 
   function toggleDedup() {
     dedupEnabled.value = !dedupEnabled.value;
     localStorage.setItem('mininook_dedup', String(dedupEnabled.value));
+    useOnboardingStore().recordEvent('filter-toggled');
   }
 
   function toggleShowRead() {
     showRead.value = !showRead.value;
     localStorage.setItem('mininook_show_read', String(showRead.value));
+    useOnboardingStore().recordEvent('filter-toggled');
   }
 
   /** Map feed_id → category_id from the feeds list */
@@ -297,6 +301,7 @@ export const useEntriesStore = defineStore('entries', () => {
     if (entry && entry.status === 'unread') decrementUnread(entry.feed_id);
     await client.updateEntryStatus([entryId], 'read');
     if (entry) entry.status = 'read';
+    useOnboardingStore().recordEvent('article-read');
   }
 
   async function dismiss(entryId: number) {
@@ -309,6 +314,7 @@ export const useEntriesStore = defineStore('entries', () => {
     const client = getClient();
     await client.updateEntryStatus([entryId], 'removed');
     entries.value = entries.value.filter((e) => e.id !== entryId);
+    useOnboardingStore().recordEvent('bookmark-or-dismiss');
   }
 
   async function toggleBookmark(entryId: number) {
@@ -316,6 +322,7 @@ export const useEntriesStore = defineStore('entries', () => {
     await client.toggleBookmark(entryId);
     const entry = entries.value.find((e) => e.id === entryId);
     if (entry) entry.starred = !entry.starred;
+    useOnboardingStore().recordEvent('bookmark-or-dismiss');
   }
 
   async function fetchBookmarks() {
@@ -359,6 +366,7 @@ export const useEntriesStore = defineStore('entries', () => {
   function setActiveCategory(categoryId: number | null) {
     if (activeCategory.value === categoryId) return;
     activeCategory.value = categoryId;
+    if (categoryId !== null) useOnboardingStore().recordEvent('category-filter-changed');
   }
 
   // Refetch entries whenever the active category changes or the read filter

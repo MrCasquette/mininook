@@ -2,8 +2,10 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SearchModal from '@/components/organisms/SearchModal.vue';
+import { useOnboardingStore } from '@/stores/onboarding';
 
 const { t } = useI18n();
+const onboardingStore = useOnboardingStore();
 
 const navLinks = [
   { name: 'register', key: 'nav.register' },
@@ -16,6 +18,7 @@ const searchOpen = ref(false);
 
 function openSearch() {
   searchOpen.value = true;
+  onboardingStore.recordEvent('search-opened');
 }
 function closeSearch() {
   searchOpen.value = false;
@@ -25,6 +28,7 @@ function onKeyDown(e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault();
     searchOpen.value = !searchOpen.value;
+    if (searchOpen.value) onboardingStore.recordEvent('search-opened');
   }
 }
 
@@ -55,6 +59,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown));
       </nav>
       <button
         type="button"
+        data-onboard="search-button"
         class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
         :title="t('search.title')"
         :aria-label="t('search.title')"

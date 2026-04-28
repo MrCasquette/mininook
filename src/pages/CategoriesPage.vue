@@ -4,9 +4,11 @@ import { useI18n } from 'vue-i18n';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { getClient } from '@/services/miniflux';
 import { sortCategories, getDefaultCategoryId, displayCategoryTitle } from '@/utils/sortCategories';
+import { useOnboardingStore } from '@/stores/onboarding';
 import type { Category, Feed } from '@/types/miniflux';
 
 const { t } = useI18n();
+const onboardingStore = useOnboardingStore();
 
 const categories = ref<Category[]>([]);
 const feeds = ref<Feed[]>([]);
@@ -69,6 +71,7 @@ async function create() {
     categories.value.push(cat);
     categories.value = sortCategories(categories.value);
     newName.value = '';
+    onboardingStore.recordEvent('category-created');
   } catch (e) {
     createError.value = e instanceof Error ? e.message : t('common.errorGeneric');
   } finally {
@@ -159,7 +162,7 @@ function feedsCountLabel(catId: number): string {
       </header>
 
       <!-- Create form -->
-      <section class="mb-8 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 ring-1 ring-zinc-800/40">
+      <section data-onboard="create-category" class="mb-8 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 ring-1 ring-zinc-800/40">
         <form class="flex flex-col gap-2 sm:flex-row sm:items-end" @submit.prevent="create">
           <input
             v-model="newName"

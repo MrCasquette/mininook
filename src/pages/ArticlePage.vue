@@ -101,6 +101,7 @@ watch([articleContent, contentRef], async () => {
 
         <div class="flex items-center gap-1">
           <button
+            data-onboard="mark-read"
             :class="[
               'rounded-lg p-1.5 transition-colors hover:bg-zinc-800',
               isRead ? 'text-green-400' : 'text-zinc-400 hover:text-zinc-200',

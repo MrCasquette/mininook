@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import AppLayout from '@/layouts/AppLayout.vue';
 import EntryCard from '@/components/molecules/EntryCard.vue';
-import OnboardingModal from '@/components/organisms/OnboardingModal.vue';
 import { useEntriesStore } from '@/stores/entries';
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll';
 import type { Entry } from '@/types/miniflux';
@@ -44,14 +43,9 @@ const { sentinel: parentRef } = useInfiniteScroll({
   onLoad: () => entriesStore.loadMore(),
 });
 
-const showOnboarding = ref(false);
-
 onMounted(async () => {
   updateCols();
   window.addEventListener('resize', updateCols);
-  if (localStorage.getItem('mininook_onboarded') !== 'true') {
-    showOnboarding.value = true;
-  }
   try {
     await Promise.all([entriesStore.fetchEntries(), entriesStore.fetchCategories()]);
   } catch (e) {
@@ -112,12 +106,13 @@ onBeforeUnmount(() => {
 
     <!-- Plain grid (debug: virtualization disabled) -->
     <template v-else>
-      <div :style="gridStyle" class="pt-6">
+      <div data-onboard="feed-grid" :style="gridStyle" class="pt-6">
         <EntryCard
-          v-for="dedup in entriesStore.filteredEntries"
+          v-for="(dedup, idx) in entriesStore.filteredEntries"
           :key="dedup.entry.id"
           :entry="dedup.entry"
           :duplicates="dedup.duplicates"
+          :data-onboard="idx === 0 ? 'card-first' : null"
           @open="openArticle"
           @dismiss="dismissEntry"
           @bookmark="bookmarkEntry"
@@ -137,5 +132,4 @@ onBeforeUnmount(() => {
       </div>
     </template>
   </AppLayout>
-  <OnboardingModal v-if="showOnboarding" @close="showOnboarding = false" />
 </template>

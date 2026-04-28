@@ -40,6 +40,10 @@ onMounted(async () => {
       <span class="text-sm text-zinc-500">{{ t('bookmarks.title') }}</span>
     </template>
 
+    <h1 data-onboard="bookmarks-page" class="pt-6 text-2xl font-bold text-zinc-100">
+      {{ t('bookmarks.title') }}
+    </h1>
+
     <!-- Loading -->
     <div v-if="entriesStore.loading" class="flex items-center justify-center pt-32">
       <div class="h-8 w-8 animate-spin rounded-full border-2 border-zinc-700 border-t-zinc-300" />

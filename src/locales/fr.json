@@ -36,29 +36,65 @@
   "onboarding": {
     "next": "Suivant",
     "previous": "Précédent",
+    "skipStep": "Passer cette étape",
+    "skipAll": "Tout passer",
+    "finish": "Terminer",
     "done": "C'est parti",
-    "slides": [
-      {
-        "title": "Bienvenue sur MiniNook",
-        "desc": "Un lecteur RSS clean construit au-dessus de ton serveur Miniflux. Voici ce que tu peux y faire en quelques secondes."
+    "stepCounter": "Étape {n} sur {total}",
+    "steps": {
+      "1": {
+        "title": "Crée ta première catégorie",
+        "body": "Les catégories te permettent d'organiser tes flux par thématique. Donne un nom à ta première et clique « Créer »."
       },
-      {
-        "title": "Découvre et abonne-toi à des flux",
-        "desc": "Onglet « Découvrir » pour ajouter en un clic des flux suggérés. Onglet « Mes flux » pour rafraîchir ou supprimer ce que tu suis déjà."
+      "2": {
+        "title": "Ajoute ton premier flux",
+        "body": "Colle l'URL d'un site dans le formulaire (ou son flux RSS). On te demandera la catégorie de destination. Tu peux aussi piocher dans Suggestions."
       },
-      {
-        "title": "Parcours par catégorie et filtre",
-        "desc": "La barre de catégories en bas filtre par thématique. En haut, deux toggles : « 🔒 paywall » pour cacher les articles payants, « ▦ dédup » pour regrouper les doublons inter-feeds."
+      "3": {
+        "title": "Voilà tes flux",
+        "body": "Tes derniers articles non lus apparaissent ici, par ordre antéchronologique. Le défilement charge la suite automatiquement."
       },
-      {
-        "title": "Réagis et nettoie",
-        "desc": "✓ Marquer comme lu  •  ⭐ Lire plus tard  •  ✕ Pas intéressé. Les articles écartés vont dans « Indésirables » et tu peux ouvrir l'original sur la page article."
+      "4": {
+        "title": "Lis un article",
+        "body": "Clique une carte pour ouvrir l'article. Sur la page lecture, l'icône ✓ le marque comme lu."
       },
-      {
-        "title": "Garde des flux pertinents",
-        "desc": "Sur « Indésirables », un graphique te montre quels flux te génèrent le plus de bruit. Désabonne-toi directement depuis cette vue pour assainir ton feed."
+      "5": {
+        "title": "Réagis sur tes articles",
+        "body": "Le bouton signet pour le sauver dans Ma liste, ✕ pour l'écarter. Les écartés sont rangés ailleurs et n'encombrent plus ton flux."
+      },
+      "6": {
+        "title": "Filtre par catégorie",
+        "body": "La barre du bas te permet de te concentrer sur une thématique. Clique une catégorie pour filtrer."
+      },
+      "7": {
+        "title": "Affine tes filtres",
+        "body": "L'œil pour afficher aussi les déjà lus, le badge paywall pour cacher les payants, et l'icône dédup pour regrouper les doublons inter-flux."
+      },
+      "8": {
+        "title": "Recherche rapide",
+        "body": "Frappe ⌘K (ou clique la loupe) pour chercher dans tes articles. Les flèches naviguent, Entrée ouvre."
+      },
+      "9": {
+        "title": "Gère tes flux et catégories",
+        "body": "« Mes flux » liste tout, te laisse glisser-déposer entre catégories, ajouter ou supprimer. « Gérer les catégories » pour le CRUD complet."
+      },
+      "10": {
+        "title": "Lis quand tu en as envie",
+        "body": "Les articles que tu sauves avec le signet atterrissent dans « Ma liste » pour les retrouver à tête reposée."
+      },
+      "11": {
+        "title": "Garde un flux propre",
+        "body": "« Écartés » te montre un graphique par flux : tu vois quelles sources te génèrent le plus de bruit, et tu peux te désabonner d'un clic."
+      },
+      "12": {
+        "title": "Tes paramètres",
+        "body": "Langue, compte, déconnexion : tout est là. Tu peux changer la langue de l'interface à la volée."
+      },
+      "13": {
+        "title": "C'est parti !",
+        "body": "Tu connais l'essentiel. Bonne lecture !"
       }
-    ]
+    }
   },
   "nav": {
     "feed": "Liste",
@@ -124,10 +160,14 @@
   },
   "register": {
     "title": "Suggestions",
-    "subtitle": "Une sélection de flux à ajouter en un clic à ton Miniflux.",
+    "subtitle": "Une sélection de flux à ajouter à ton Miniflux. Choisis la catégorie à l'ajout.",
     "subscribed": "Abonné",
     "subscribing": "Abonnement…",
-    "subscribe": "S'abonner"
+    "subscribe": "S'abonner",
+    "pickCategory": "Choisis une catégorie",
+    "noPreference": "Aucune préférence",
+    "confirm": "Ajouter",
+    "cancel": "Annuler"
   },
   "handle": {
     "title": "Mes flux",

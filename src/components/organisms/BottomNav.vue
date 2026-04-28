@@ -34,7 +34,7 @@ function selectCategory(id: number | null) {
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/50 bg-zinc-950/90 backdrop-blur-xl">
+  <nav data-onboard="bottom-nav" class="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/50 bg-zinc-950/90 backdrop-blur-xl">
     <div class="mx-auto max-w-screen-2xl">
       <div class="flex items-center gap-1 overflow-x-auto px-2 py-2 scrollbar-none sm:justify-center sm:gap-2">
         <button

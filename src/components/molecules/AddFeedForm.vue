@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getClient } from '@/services/miniflux';
 import { sortCategories, getDefaultCategoryId, displayCategoryTitle } from '@/utils/sortCategories';
+import { useOnboardingStore } from '@/stores/onboarding';
 import type { Category, DiscoveredFeed } from '@/types/miniflux';
 
 const props = defineProps<{
@@ -15,6 +16,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const onboardingStore = useOnboardingStore();
 
 const sortedCategories = computed(() => sortCategories(props.categories));
 const defaultCategoryId = computed(() => getDefaultCategoryId(props.categories));
@@ -52,6 +54,7 @@ async function addByUrl(feedUrl: string, categoryId: number) {
   }
   const { feed_id } = await getClient().createFeed(feedUrl, categoryId);
   emit('added', { feedId: feed_id, categoryId });
+  onboardingStore.recordEvent('feed-added');
   success.value = true;
   setTimeout(() => (success.value = false), 2500);
   reset();

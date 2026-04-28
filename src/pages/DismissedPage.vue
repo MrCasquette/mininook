@@ -130,6 +130,10 @@ onMounted(async () => {
       <span class="text-sm text-zinc-500">{{ t('dismissed.title') }}</span>
     </template>
 
+    <h1 data-onboard="dismissed-page" class="pt-6 text-2xl font-bold text-zinc-100">
+      {{ t('dismissed.title') }}
+    </h1>
+
     <!-- Loading -->
     <div v-if="loading" class="flex items-center justify-center pt-32">
       <div class="h-8 w-8 animate-spin rounded-full border-2 border-zinc-700 border-t-zinc-300" />

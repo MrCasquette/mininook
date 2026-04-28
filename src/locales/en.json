@@ -36,29 +36,65 @@
   "onboarding": {
     "next": "Next",
     "previous": "Previous",
+    "skipStep": "Skip this step",
+    "skipAll": "Skip tour",
+    "finish": "Finish",
     "done": "Let's go",
-    "slides": [
-      {
-        "title": "Welcome to MiniNook",
-        "desc": "A clean RSS reader built on top of your Miniflux server. Here's what you can do in seconds."
+    "stepCounter": "Step {n} of {total}",
+    "steps": {
+      "1": {
+        "title": "Create your first category",
+        "body": "Categories help you organize feeds by topic. Pick a name and click \"Create\"."
       },
-      {
-        "title": "Discover and subscribe to feeds",
-        "desc": "“Discover” tab to add suggested feeds in one click. “My feeds” tab to refresh or delete the ones you already follow."
+      "2": {
+        "title": "Add your first feed",
+        "body": "Paste the URL of a site (or its RSS feed). You'll be asked which category. You can also pick from Suggestions."
       },
-      {
-        "title": "Browse by category and filter",
-        "desc": "The category bar at the bottom filters by topic. At the top, two toggles: “🔒 paywall” to hide paid articles, “▦ dedup” to group cross-feed duplicates."
+      "3": {
+        "title": "Here are your feeds",
+        "body": "Your latest unread articles show up here, newest first. Scrolling auto-loads more."
       },
-      {
-        "title": "React and clean up",
-        "desc": "✓ Mark as read  •  ⭐ Read later  •  ✕ Not interested. Dismissed items land in “Discarded” and you can open the original from the article page."
+      "4": {
+        "title": "Read an article",
+        "body": "Click a card to open it. On the reader page, the ✓ icon marks it as read."
       },
-      {
-        "title": "Keep your feeds relevant",
-        "desc": "On “Discarded”, a chart shows which feeds generate the most noise. Unsubscribe directly from this view to clean up your feed."
+      "5": {
+        "title": "React on articles",
+        "body": "The bookmark button to save it to My list, ✕ to discard it. Discarded items move out of your feed."
+      },
+      "6": {
+        "title": "Filter by category",
+        "body": "The bottom bar lets you focus on a topic. Click a category to filter."
+      },
+      "7": {
+        "title": "Refine your filters",
+        "body": "The eye toggles already-read articles, the paywall badge hides paid ones, and the dedup icon groups cross-feed duplicates."
+      },
+      "8": {
+        "title": "Quick search",
+        "body": "Press ⌘K (or click the magnifier) to search through your articles. Arrows navigate, Enter opens."
+      },
+      "9": {
+        "title": "Manage feeds and categories",
+        "body": "\"My feeds\" lists everything, lets you drag-and-drop between categories, add or remove. \"Manage categories\" for full CRUD."
+      },
+      "10": {
+        "title": "Read when you feel like it",
+        "body": "Articles you bookmark land in \"My list\" — pick them back up at your own pace."
+      },
+      "11": {
+        "title": "Keep your feed clean",
+        "body": "\"Discarded\" shows a per-feed chart: spot the noisy sources, unsubscribe in one click."
+      },
+      "12": {
+        "title": "Your settings",
+        "body": "Language, account, sign out: everything is here. You can switch the interface language on the fly."
+      },
+      "13": {
+        "title": "You're set!",
+        "body": "You know the essentials. Happy reading!"
       }
-    ]
+    }
   },
   "nav": {
     "feed": "Feed",
@@ -124,10 +160,14 @@
   },
   "register": {
     "title": "Suggestions",
-    "subtitle": "A selection of feeds to add to your Miniflux in one click.",
+    "subtitle": "A selection of feeds to add to your Miniflux. Pick a category at add time.",
     "subscribed": "Subscribed",
     "subscribing": "Subscribing…",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "pickCategory": "Pick a category",
+    "noPreference": "No preference",
+    "confirm": "Add",
+    "cancel": "Cancel"
   },
   "handle": {
     "title": "My feeds",
