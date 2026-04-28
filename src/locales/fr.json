@@ -64,6 +64,7 @@
     "feed": "Liste",
     "register": "Suggestions",
     "handle": "Mes flux",
+    "categories": "Catégories",
     "bookmarks": "Ma liste",
     "dismissed": "Écartés",
     "settings": "Paramètres"
@@ -85,7 +86,9 @@
     "paywallShow": "Afficher les articles payants",
     "paywallHide": "Masquer les articles payants",
     "dedupOn": "Activer le regroupement des doublons",
-    "dedupOff": "Désactiver le regroupement des doublons"
+    "dedupOff": "Désactiver le regroupement des doublons",
+    "showReadOn": "Afficher aussi les déjà lus",
+    "showReadOff": "Masquer les déjà lus"
   },
   "bottomNav": {
     "all": "Tous"
@@ -133,7 +136,25 @@
     "discover": "Découvrir des flux",
     "refresh": "Actualiser",
     "delete": "Supprimer",
-    "deleteConfirm": "Supprimer le flux \"{title}\" ?"
+    "deleteConfirm": "Supprimer le flux \"{title}\" ?",
+    "manageCategories": "Gérer les catégories",
+    "backToFeeds": "Retour aux flux",
+    "moveTo": "Déplacer vers",
+    "dropHere": "Déposer ici",
+    "moving": "Déplacement…",
+    "addTitle": "Ajouter un flux",
+    "addUrlPlaceholder": "https://blog.example.com ou son flux RSS",
+    "addCategoryLabel": "Catégorie",
+    "addCategoryNew": "+ Nouvelle catégorie",
+    "addCategoryNewPlaceholder": "Nom de la catégorie",
+    "addSubmit": "Ajouter",
+    "addSubmitting": "Ajout…",
+    "addDiscovering": "Recherche du flux…",
+    "addPickFeed": "Plusieurs flux trouvés, choisis celui à ajouter :",
+    "addNotFound": "Aucun flux RSS trouvé sur cette page.",
+    "addAlreadySubscribed": "Tu es déjà abonné à ce flux.",
+    "addInvalidUrl": "URL invalide.",
+    "addSuccess": "Flux ajouté."
   },
   "bookmarks": {
     "title": "Ma liste",
@@ -146,5 +167,21 @@
     "emptyHint": "Les articles marqués « pas intéressé » apparaîtront ici.",
     "noiseChart": "Bruit par flux",
     "unsubscribeFrom": "Se désabonner de {name}"
+  },
+  "categories": {
+    "title": "Catégories",
+    "subtitle": "Organise tes flux en catégories.",
+    "defaultName": "Non attribué",
+    "feedsCount": "{n} flux",
+    "feedsCountZero": "Aucun flux",
+    "create": "Créer",
+    "createPlaceholder": "Nom de la catégorie",
+    "rename": "Renommer",
+    "delete": "Supprimer",
+    "deleteConfirm": "Supprimer cette catégorie ?",
+    "deleteWithFeeds": "Cette catégorie contient encore des flux. Déplace-les ailleurs avant de la supprimer.",
+    "empty": "Aucune catégorie pour l'instant.",
+    "renameError": "Impossible de renommer.",
+    "deleteError": "Impossible de supprimer."
   }
 }

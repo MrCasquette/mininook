@@ -9,3 +9,12 @@ a,
 button:disabled {
   cursor: not-allowed;
 }
+
+/* Hide native scrollbar on horizontal scrollers (TopNav, BottomNav, …) */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

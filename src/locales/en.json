@@ -64,6 +64,7 @@
     "feed": "Feed",
     "register": "Suggestions",
     "handle": "My feeds",
+    "categories": "Categories",
     "bookmarks": "My list",
     "dismissed": "Discarded",
     "settings": "Settings"
@@ -85,7 +86,9 @@
     "paywallShow": "Show paywalled articles",
     "paywallHide": "Hide paywalled articles",
     "dedupOn": "Enable cross-feed deduplication",
-    "dedupOff": "Disable cross-feed deduplication"
+    "dedupOff": "Disable cross-feed deduplication",
+    "showReadOn": "Also show already-read articles",
+    "showReadOff": "Hide already-read articles"
   },
   "bottomNav": {
     "all": "All"
@@ -133,7 +136,25 @@
     "discover": "Discover feeds",
     "refresh": "Refresh",
     "delete": "Delete",
-    "deleteConfirm": "Delete feed \"{title}\"?"
+    "deleteConfirm": "Delete feed \"{title}\"?",
+    "manageCategories": "Manage categories",
+    "backToFeeds": "Back to feeds",
+    "moveTo": "Move to",
+    "dropHere": "Drop here",
+    "moving": "Moving…",
+    "addTitle": "Add a feed",
+    "addUrlPlaceholder": "https://blog.example.com or its RSS feed",
+    "addCategoryLabel": "Category",
+    "addCategoryNew": "+ New category",
+    "addCategoryNewPlaceholder": "Category name",
+    "addSubmit": "Add",
+    "addSubmitting": "Adding…",
+    "addDiscovering": "Looking for the feed…",
+    "addPickFeed": "Multiple feeds found, pick the one to add:",
+    "addNotFound": "No RSS feed found on this page.",
+    "addAlreadySubscribed": "You're already subscribed to this feed.",
+    "addInvalidUrl": "Invalid URL.",
+    "addSuccess": "Feed added."
   },
   "bookmarks": {
     "title": "My list",
@@ -146,5 +167,21 @@
     "emptyHint": "Articles marked “not interested” will appear here.",
     "noiseChart": "Noise by feed",
     "unsubscribeFrom": "Unsubscribe from {name}"
+  },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Organize your feeds into categories.",
+    "defaultName": "Uncategorized",
+    "feedsCount": "{n} feeds",
+    "feedsCountZero": "No feeds",
+    "create": "Create",
+    "createPlaceholder": "Category name",
+    "rename": "Rename",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this category?",
+    "deleteWithFeeds": "This category still contains feeds. Move them elsewhere before deleting.",
+    "empty": "No categories yet.",
+    "renameError": "Couldn't rename.",
+    "deleteError": "Couldn't delete."
   }
 }

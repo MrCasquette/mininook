@@ -35,6 +35,10 @@ function loadDedupFromStorage(): boolean {
   return localStorage.getItem('mininook_dedup') === 'true';
 }
 
+function loadShowReadFromStorage(): boolean {
+  return localStorage.getItem('mininook_show_read') === 'true';
+}
+
 export const useEntriesStore = defineStore('entries', () => {
   const entries = ref<Entry[]>([]);
   const categories = ref<Category[]>([]);
@@ -45,6 +49,7 @@ export const useEntriesStore = defineStore('entries', () => {
   const dismissedEntries = ref<Entry[]>(loadDismissedFromStorage());
   const hidePaywall = ref(loadHidePaywallFromStorage());
   const dedupEnabled = ref(loadDedupFromStorage());
+  const showRead = ref(loadShowReadFromStorage());
   const feeds = ref<Feed[]>([]);
   const counters = ref<FeedCounters>({ reads: {}, unreads: {} });
 
@@ -89,6 +94,11 @@ export const useEntriesStore = defineStore('entries', () => {
   function toggleDedup() {
     dedupEnabled.value = !dedupEnabled.value;
     localStorage.setItem('mininook_dedup', String(dedupEnabled.value));
+  }
+
+  function toggleShowRead() {
+    showRead.value = !showRead.value;
+    localStorage.setItem('mininook_show_read', String(showRead.value));
   }
 
   /** Map feed_id → category_id from the feeds list */
@@ -186,16 +196,19 @@ export const useEntriesStore = defineStore('entries', () => {
 
   const PAGE_SIZE = 50;
   const loadingMore = ref(false);
-  const currentStatus = ref<EntryStatus>('unread');
   const hasMore = computed(() => entries.value.length < total.value);
 
-  async function fetchEntries(status: EntryStatus = 'unread') {
+  /** Build the status filter sent to Miniflux based on the showRead toggle. */
+  const statusFilter = computed<EntryStatus[]>(() =>
+    showRead.value ? ['unread', 'read'] : ['unread'],
+  );
+
+  async function fetchEntries() {
     loading.value = true;
-    currentStatus.value = status;
     try {
       const client = getClient();
       const response = await client.getEntries({
-        status,
+        status: statusFilter.value,
         order: 'published_at',
         direction: 'desc',
         limit: PAGE_SIZE,
@@ -229,7 +242,7 @@ export const useEntriesStore = defineStore('entries', () => {
     try {
       const client = getClient();
       const response = await client.getEntries({
-        status: currentStatus.value,
+        status: statusFilter.value,
         order: 'published_at',
         direction: 'desc',
         limit: PAGE_SIZE,
@@ -348,10 +361,11 @@ export const useEntriesStore = defineStore('entries', () => {
     activeCategory.value = categoryId;
   }
 
-  // Refetch entries whenever the active category changes (server-side filtering).
-  watch(activeCategory, () => {
+  // Refetch entries whenever the active category changes or the read filter
+  // toggles (both require server-side re-query).
+  watch([activeCategory, showRead], () => {
     if (!loading.value || entries.value.length > 0) {
-      fetchEntries(currentStatus.value);
+      fetchEntries();
     }
   });
 
@@ -382,6 +396,8 @@ export const useEntriesStore = defineStore('entries', () => {
     totalUnread,
     dedupEnabled,
     toggleDedup,
+    showRead,
+    toggleShowRead,
     counters,
     refreshCounters,
     loadMore,

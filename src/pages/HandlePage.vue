@@ -2,15 +2,21 @@
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AppLayout from '@/layouts/AppLayout.vue';
+import AddFeedForm from '@/components/molecules/AddFeedForm.vue';
 import { getClient } from '@/services/miniflux';
-import type { Feed } from '@/types/miniflux';
+import { sortCategories, getDefaultCategoryId, displayCategoryTitle } from '@/utils/sortCategories';
+import type { Category, Feed } from '@/types/miniflux';
 
 const { t } = useI18n();
 
 const feeds = ref<Feed[]>([]);
+const categories = ref<Category[]>([]);
 const refreshing = ref<Set<number>>(new Set());
 const deleting = ref<Set<number>>(new Set());
+const moving = ref<Set<number>>(new Set());
 const errors = ref<Record<number, string>>({});
+
+const subscribedUrls = computed(() => new Set(feeds.value.map((f) => f.feed_url)));
 
 onMounted(async () => {
   await reload();
@@ -18,21 +24,90 @@ onMounted(async () => {
 
 async function reload() {
   try {
-    feeds.value = await getClient().getFeeds();
+    const [f, c] = await Promise.all([
+      getClient().getFeeds(),
+      getClient().getCategories(),
+    ]);
+    feeds.value = f;
+    categories.value = c;
   } catch (e) {
-    console.warn('[handle] failed to load feeds', e);
+    console.warn('[handle] failed to load', e);
   }
 }
 
-const grouped = computed(() => {
-  const out: Record<string, Feed[]> = {};
-  for (const f of feeds.value) {
-    const cat = f.category.title;
-    if (!out[cat]) out[cat] = [];
-    out[cat].push(f);
+async function onFeedAdded() {
+  // Refresh the feed list so the new entry shows up grouped properly
+  try {
+    feeds.value = await getClient().getFeeds();
+  } catch (e) {
+    console.warn('[handle] failed to reload feeds after add', e);
   }
-  return out;
-});
+}
+
+const defaultCategoryId = computed(() => getDefaultCategoryId(categories.value));
+
+function catLabel(cat: Category): string {
+  return displayCategoryTitle(cat, defaultCategoryId.value, t);
+}
+
+/** Buckets keyed by category id — includes empty categories as drop targets */
+const buckets = computed(() =>
+  sortCategories(categories.value).map((cat) => ({
+    category: cat,
+    feeds: feeds.value.filter((f) => f.category.id === cat.id),
+  })),
+);
+
+const draggedFeedId = ref<number | null>(null);
+const dragOverCategoryId = ref<number | null>(null);
+
+function onDragStart(feed: Feed, e: DragEvent) {
+  draggedFeedId.value = feed.id;
+  e.dataTransfer?.setData('text/plain', String(feed.id));
+  if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragEnd() {
+  draggedFeedId.value = null;
+  dragOverCategoryId.value = null;
+}
+
+function onDragOver(catId: number, e: DragEvent) {
+  e.preventDefault();
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+  dragOverCategoryId.value = catId;
+}
+
+function onDragLeave(catId: number) {
+  if (dragOverCategoryId.value === catId) dragOverCategoryId.value = null;
+}
+
+async function onDrop(targetCatId: number) {
+  const feedId = draggedFeedId.value;
+  draggedFeedId.value = null;
+  dragOverCategoryId.value = null;
+  if (!feedId) return;
+  const feed = feeds.value.find((f) => f.id === feedId);
+  if (!feed || feed.category.id === targetCatId) return;
+
+  if (moving.value.has(feed.id)) return;
+  moving.value.add(feed.id);
+  delete errors.value[feed.id];
+
+  // Optimistic update
+  const previousCat = feed.category;
+  const newCat = categories.value.find((c) => c.id === targetCatId);
+  if (newCat) feed.category = newCat;
+
+  try {
+    await getClient().updateFeed(feed.id, { category_id: targetCatId });
+  } catch (err) {
+    feed.category = previousCat;
+    errors.value[feed.id] = err instanceof Error ? err.message : t('common.errorGeneric');
+  } finally {
+    moving.value.delete(feed.id);
+  }
+}
 
 async function refresh(feed: Feed) {
   if (refreshing.value.has(feed.id)) return;
@@ -66,22 +141,61 @@ async function remove(feed: Feed) {
 <template>
   <AppLayout>
     <div class="mx-auto max-w-3xl pt-6">
-      <header class="mb-8">
-        <h1 class="text-2xl font-bold text-zinc-100">{{ t('handle.title') }}</h1>
-        <p class="mt-2 text-sm text-zinc-500">{{ t('handle.count', { n: feeds.length }) }}</p>
+      <header class="mb-6 flex items-start justify-between gap-3">
+        <div>
+          <h1 class="text-2xl font-bold text-zinc-100">{{ t('handle.title') }}</h1>
+          <p class="mt-2 text-sm text-zinc-500">{{ t('handle.count', { n: feeds.length }) }}</p>
+        </div>
+        <router-link
+          :to="{ name: 'categories' }"
+          class="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+        >
+          {{ t('handle.manageCategories') }}
+        </router-link>
       </header>
 
+      <div class="mb-8">
+        <AddFeedForm
+          :categories="categories"
+          :subscribed-urls="subscribedUrls"
+          @added="onFeedAdded"
+        />
+      </div>
+
       <section
-        v-for="(catFeeds, category) in grouped"
-        :key="category"
+        v-for="bucket in buckets"
+        :key="bucket.category.id"
         class="mb-8"
+        :class="{ 'opacity-100': true }"
+        @dragover="onDragOver(bucket.category.id, $event)"
+        @dragleave="onDragLeave(bucket.category.id)"
+        @drop="onDrop(bucket.category.id)"
       >
-        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-zinc-400">{{ category }}</h2>
-        <ul class="flex flex-col gap-2">
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+          {{ catLabel(bucket.category) }}
+        </h2>
+        <ul
+          class="flex flex-col gap-2 rounded-xl p-2 transition-colors"
+          :class="
+            dragOverCategoryId === bucket.category.id
+              ? 'bg-blue-500/10 ring-2 ring-blue-500/40'
+              : 'ring-1 ring-transparent'
+          "
+        >
           <li
-            v-for="feed in catFeeds"
+            v-if="bucket.feeds.length === 0"
+            class="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-xs text-zinc-600"
+          >
+            {{ t('handle.dropHere') }}
+          </li>
+          <li
+            v-for="feed in bucket.feeds"
             :key="feed.id"
-            class="flex items-center justify-between gap-3 rounded-xl border border-zinc-800/60 bg-zinc-900/50 px-4 py-3"
+            draggable="true"
+            class="flex cursor-grab items-center justify-between gap-3 rounded-xl border border-zinc-800/60 bg-zinc-900/50 px-4 py-3 transition-opacity active:cursor-grabbing"
+            :class="{ 'opacity-40': draggedFeedId === feed.id }"
+            @dragstart="onDragStart(feed, $event)"
+            @dragend="onDragEnd"
           >
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-medium text-zinc-100">{{ feed.title }}</p>

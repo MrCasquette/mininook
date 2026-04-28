@@ -21,7 +21,7 @@ const navLinks = [
       >
         MiniNook
       </router-link>
-      <nav class="flex flex-1 items-center gap-1 overflow-x-auto text-sm font-medium">
+      <nav class="scrollbar-none flex flex-1 items-center gap-1 overflow-x-auto text-sm font-medium">
         <router-link
           v-for="link in navLinks"
           :key="link.name"

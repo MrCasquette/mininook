@@ -7,12 +7,65 @@ export class LeFigaroExtractor extends Extractor {
 
   clean(doc: Document, ctx: ExtractionContext): ExtractionResult {
     this.removeShareButton(doc);
+    this.removeShareFooter(doc);
+    this.removeTvWidget(doc);
+    this.removeRelatedReadInline(doc);
     const heroCaption = this.extractHeroCaption(doc);
     this.removeSponsorLists(doc);
     this.removePromoSections(doc);
     this.removePromoLinks(doc);
     this.removeTitleDuplicate(doc, ctx.title);
     return ExtractionResultSchema.parse({ heroCaption });
+  }
+
+  /**
+   * "Programme TV ce soir" widget — a <ul> whose <li>s all link to
+   * `tvmag.lefigaro.fr/programme-tv/`. Drop the entire surrounding container.
+   */
+  private removeTvWidget(doc: Document): void {
+    for (const ul of Array.from(doc.querySelectorAll('ul'))) {
+      const items = Array.from(ul.children).filter((c) => c.tagName === 'LI');
+      if (items.length < 3) continue;
+      const allTvLinks = items.every((li) =>
+        li.querySelector('a[href*="tvmag.lefigaro.fr/programme-tv/"]') !== null,
+      );
+      if (!allTvLinks) continue;
+      // Climb up to the wrapper that also holds the "Programme TV ce soir" link
+      const wrapper =
+        ul.closest('div')?.parentElement?.tagName === 'DIV'
+          ? ul.closest('div')!.parentElement
+          : ul.closest('div');
+      (wrapper ?? ul).remove();
+    }
+  }
+
+  /**
+   * Inline related-article teaser like
+   *   <p>À lire aussi <a href="…">…</a></p>
+   * — drop the whole <p>.
+   */
+  private removeRelatedReadInline(doc: Document): void {
+    for (const p of Array.from(doc.querySelectorAll('p'))) {
+      const text = p.textContent?.trim() ?? '';
+      if (!/^À\s+lire\s+aussi\b/i.test(text)) continue;
+      if (!p.querySelector('a[href]')) continue;
+      p.remove();
+    }
+  }
+
+  /** Footer "Partager via:" — drop the <p> and walk up if its parent is share-only. */
+  private removeShareFooter(doc: Document): void {
+    for (const p of Array.from(doc.querySelectorAll('p'))) {
+      if (p.textContent?.trim() !== 'Partager via:') continue;
+      let node: Element = p;
+      while (
+        node.parentElement &&
+        (node.parentElement.textContent?.trim() ?? '').startsWith('Partager via:')
+      ) {
+        node = node.parentElement;
+      }
+      node.remove();
+    }
   }
 
   private removeShareButton(doc: Document): void {

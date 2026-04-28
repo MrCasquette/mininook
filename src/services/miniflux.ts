@@ -1,6 +1,7 @@
 import { invoke } from '@tauri-apps/api/core';
 import type {
   Category,
+  DiscoveredFeed,
   EntriesResponse,
   Entry,
   EntryQueryParams,
@@ -43,7 +44,7 @@ class MinifluxClient {
     for (const [key, value] of Object.entries(params)) {
       if (value === undefined) continue;
       if (Array.isArray(value)) {
-        searchParams.set(key, value.join(','));
+        for (const v of value) searchParams.append(key, String(v));
       } else {
         searchParams.set(key, String(value));
       }
@@ -65,6 +66,13 @@ class MinifluxClient {
     return this.request('/feeds', {
       method: 'POST',
       body: JSON.stringify({ feed_url: feedUrl, category_id: categoryId }),
+    });
+  }
+
+  async discoverFeeds(url: string): Promise<DiscoveredFeed[]> {
+    return this.request('/discover', {
+      method: 'POST',
+      body: JSON.stringify({ url }),
     });
   }
 
@@ -93,6 +101,24 @@ class MinifluxClient {
     return this.request('/categories', {
       method: 'POST',
       body: JSON.stringify({ title }),
+    });
+  }
+
+  async updateCategory(categoryId: number, title: string): Promise<Category> {
+    return this.request(`/categories/${categoryId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ title }),
+    });
+  }
+
+  async deleteCategory(categoryId: number): Promise<void> {
+    return this.request(`/categories/${categoryId}`, { method: 'DELETE' });
+  }
+
+  async updateFeed(feedId: number, payload: { category_id?: number; title?: string }): Promise<Feed> {
+    return this.request(`/feeds/${feedId}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
     });
   }
 

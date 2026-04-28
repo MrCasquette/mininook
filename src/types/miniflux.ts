@@ -23,6 +23,12 @@ export interface FeedIcon {
   icon_id: number;
 }
 
+export interface DiscoveredFeed {
+  url: string;
+  title: string;
+  type: string;
+}
+
 export interface Enclosure {
   id: number;
   user_id: number;
