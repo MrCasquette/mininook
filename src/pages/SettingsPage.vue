@@ -5,9 +5,11 @@ import { storeToRefs } from 'pinia';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { getAvailableLocales, setLocale } from '@/i18n';
 import { useSettingsStore } from '@/stores/settings';
+import { useOnboardingStore } from '@/stores/onboarding';
 
 const { t, locale } = useI18n();
 const settingsStore = useSettingsStore();
+const onboardingStore = useOnboardingStore();
 const { serverUrl, authScheme } = storeToRefs(settingsStore);
 
 const locales = computed(() => getAvailableLocales());
@@ -39,6 +41,10 @@ function cancelDisconnect() {
 
 function confirmDisconnect() {
   settingsStore.disconnect();
+}
+
+function replayTour() {
+  onboardingStore.start();
 }
 </script>
 
@@ -116,6 +122,22 @@ function confirmDisconnect() {
               @click="requestDisconnect"
             >
               {{ t('settings.disconnect') }}
+            </button>
+          </div>
+        </section>
+
+        <!-- Onboarding -->
+        <section
+          class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 ring-1 ring-zinc-800/40"
+        >
+          <h2 class="text-sm font-medium text-zinc-200">{{ t('settings.onboardingTitle') }}</h2>
+          <div class="mt-4 flex items-center justify-between gap-3">
+            <p class="text-xs text-zinc-500">{{ t('settings.onboardingHint') }}</p>
+            <button
+              class="shrink-0 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-100"
+              @click="replayTour"
+            >
+              {{ t('settings.replayTour') }}
             </button>
           </div>
         </section>

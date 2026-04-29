@@ -117,7 +117,10 @@
     "accountSchemeBasic": "Login + mot de passe",
     "disconnect": "Se déconnecter",
     "disconnectConfirm": "Confirmer la déconnexion",
-    "disconnectHint": "Tu repasseras par l'écran de connexion."
+    "disconnectHint": "Tu repasseras par l'écran de connexion.",
+    "onboardingTitle": "Visite guidée",
+    "onboardingHint": "Revois le walkthrough d'introduction quand tu veux.",
+    "replayTour": "Revoir le tour"
   },
   "filters": {
     "label": "Filtres",

@@ -308,12 +308,21 @@ const spotlightStyle = computed(() => {
             </p>
 
             <div class="mt-5 flex items-center justify-between gap-2">
-              <button
-                class="text-[11px] text-zinc-500 transition hover:text-zinc-300"
-                @click="store.skipStep()"
-              >
-                {{ t('onboarding.skipStep') }}
-              </button>
+              <div class="flex items-center gap-2 text-[11px]">
+                <button
+                  class="text-zinc-500 transition hover:text-zinc-300"
+                  @click="store.skipStep()"
+                >
+                  {{ t('onboarding.skipStep') }}
+                </button>
+                <span class="text-zinc-700">·</span>
+                <button
+                  class="text-zinc-500 transition hover:text-red-300"
+                  @click="store.skipAll()"
+                >
+                  {{ t('onboarding.skipAll') }}
+                </button>
+              </div>
               <button
                 v-if="isManual || isLast"
                 class="rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-900 transition hover:bg-white"

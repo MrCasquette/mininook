@@ -117,7 +117,10 @@
     "accountSchemeBasic": "Login + password",
     "disconnect": "Sign out",
     "disconnectConfirm": "Confirm sign out",
-    "disconnectHint": "You'll go back to the login screen."
+    "disconnectHint": "You'll go back to the login screen.",
+    "onboardingTitle": "Guided tour",
+    "onboardingHint": "Replay the intro walkthrough whenever you like.",
+    "replayTour": "Replay tour"
   },
   "filters": {
     "label": "Filters",
