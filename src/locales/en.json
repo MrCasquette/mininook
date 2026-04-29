@@ -126,7 +126,17 @@
     "dedupOn": "Enable cross-feed deduplication",
     "dedupOff": "Disable cross-feed deduplication",
     "showReadOn": "Also show already-read articles",
-    "showReadOff": "Hide already-read articles"
+    "showReadOff": "Hide already-read articles",
+    "moreShow": "More filters",
+    "moreHide": "Hide filters",
+    "date": "Date",
+    "dateAll": "All",
+    "dateToday": "Today",
+    "dateWeek": "This week",
+    "dateMonth": "This month",
+    "feed": "Feed",
+    "feedAll": "All",
+    "reset": "Reset"
   },
   "bottomNav": {
     "all": "All"

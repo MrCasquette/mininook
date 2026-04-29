@@ -6,25 +6,24 @@ import { useEntriesStore } from '@/stores/entries';
 const { t } = useI18n();
 const store = useEntriesStore();
 
+/**
+ * Counters reflect the current server-side filters (status / date / category).
+ * They DO NOT reflect dedup or paywall — those are client-only client-side
+ * filters and the visible feed will diverge slightly when they're enabled.
+ */
 const tabs = computed(() => {
-  const isAllActive = store.activeCategory === null;
   const all = {
     id: null,
     label: t('bottomNav.all'),
-    count: isAllActive ? store.visibleTotal : store.totalUnread,
-    suffix: isAllActive && store.hasMore ? '+' : '',
+    count: store.filteredTotal ?? 0,
   };
   const cats = store.categories
     .filter((cat) => !/^(all|tous|tout)$/i.test(cat.title.trim()))
-    .map((cat) => {
-      const isActive = store.activeCategory === cat.id;
-      return {
-        id: cat.id,
-        label: cat.title,
-        count: isActive ? store.visibleTotal : store.unreadByCategory[cat.id] || 0,
-        suffix: isActive && store.hasMore ? '+' : '',
-      };
-    });
+    .map((cat) => ({
+      id: cat.id,
+      label: cat.title,
+      count: store.filteredCountsByCategory?.[cat.id] ?? 0,
+    }));
   return [all, ...cats];
 });
 
@@ -58,7 +57,7 @@ function selectCategory(id: number | null) {
                 : 'bg-zinc-800 text-zinc-400',
             ]"
           >
-            {{ tab.count }}{{ tab.suffix }}
+            {{ tab.count }}
           </span>
         </button>
       </div>

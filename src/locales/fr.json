@@ -126,7 +126,17 @@
     "dedupOn": "Activer le regroupement des doublons",
     "dedupOff": "Désactiver le regroupement des doublons",
     "showReadOn": "Afficher aussi les déjà lus",
-    "showReadOff": "Masquer les déjà lus"
+    "showReadOff": "Masquer les déjà lus",
+    "moreShow": "Plus de filtres",
+    "moreHide": "Replier les filtres",
+    "date": "Date",
+    "dateAll": "Toutes",
+    "dateToday": "Aujourd'hui",
+    "dateWeek": "Cette semaine",
+    "dateMonth": "Ce mois",
+    "feed": "Flux",
+    "feedAll": "Tous",
+    "reset": "Réinitialiser"
   },
   "bottomNav": {
     "all": "Tous"

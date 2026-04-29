@@ -126,6 +126,10 @@ class MinifluxClient {
     return this.request(`/categories/${categoryId}/entries${this.buildQuery(params)}`);
   }
 
+  async getFeedEntries(feedId: number, params: EntryQueryParams = {}): Promise<EntriesResponse> {
+    return this.request(`/feeds/${feedId}/entries${this.buildQuery(params)}`);
+  }
+
   // Entries
   async getEntries(params: EntryQueryParams = {}): Promise<EntriesResponse> {
     return this.request(`/entries${this.buildQuery(params)}`);

@@ -40,6 +40,46 @@ function loadShowReadFromStorage(): boolean {
   return localStorage.getItem('mininook_show_read') === 'true';
 }
 
+export type DateRange = 'all' | 'today' | 'week' | 'month';
+
+const DATE_RANGES: ReadonlySet<DateRange> = new Set(['all', 'today', 'week', 'month']);
+
+function loadDateRangeFromStorage(): DateRange {
+  const v = localStorage.getItem('mininook_date_range');
+  return v && DATE_RANGES.has(v as DateRange) ? (v as DateRange) : 'all';
+}
+
+function loadFeedFilterFromStorage(): number | null {
+  const v = localStorage.getItem('mininook_feed_filter');
+  if (!v) return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+/** Convert a relative date range to a Unix timestamp (seconds) for Miniflux `?after=`. */
+function dateRangeToAfter(range: DateRange): number | undefined {
+  const now = new Date();
+  switch (range) {
+    case 'today': {
+      const d = new Date(now);
+      d.setHours(0, 0, 0, 0);
+      return Math.floor(d.getTime() / 1000);
+    }
+    case 'week': {
+      const d = new Date(now);
+      d.setDate(d.getDate() - 7);
+      return Math.floor(d.getTime() / 1000);
+    }
+    case 'month': {
+      const d = new Date(now);
+      d.setDate(d.getDate() - 30);
+      return Math.floor(d.getTime() / 1000);
+    }
+    default:
+      return undefined;
+  }
+}
+
 export const useEntriesStore = defineStore('entries', () => {
   const entries = ref<Entry[]>([]);
   const categories = ref<Category[]>([]);
@@ -51,6 +91,17 @@ export const useEntriesStore = defineStore('entries', () => {
   const hidePaywall = ref(loadHidePaywallFromStorage());
   const dedupEnabled = ref(loadDedupFromStorage());
   const showRead = ref(loadShowReadFromStorage());
+  const dateRange = ref<DateRange>(loadDateRangeFromStorage());
+  const feedFilter = ref<number | null>(loadFeedFilterFromStorage());
+
+  /**
+   * Server-side filtered counts. Fetched by `fetchFilteredCounts` whenever
+   * any server-relevant filter changes (read status / date / categories
+   * loaded). Reflects: status (unread/read), date range, category boundary.
+   * Does NOT reflect: dedup, paywall — those are purely client-side.
+   */
+  const filteredCountsByCategory = ref<Record<number, number>>({});
+  const filteredTotal = ref(0);
   const feeds = ref<Feed[]>([]);
   const counters = ref<FeedCounters>({ reads: {}, unreads: {} });
 
@@ -75,16 +126,18 @@ export const useEntriesStore = defineStore('entries', () => {
    */
   const resolved = computed(() => deduped.value);
 
-  /** Pipeline step 3 — apply user filters (category + paywall). */
+  /** Resolved + paywall filter — but not category. */
+  const clientFiltered = computed(() => {
+    if (!hidePaywall.value) return resolved.value;
+    return resolved.value.filter((d) => !meta.value[d.entry.id]?.isPaywall);
+  });
+
+  /** Pipeline step 3 — apply category filter on top of client filters. */
   const filteredEntries = computed(() => {
-    let source = resolved.value;
-    if (activeCategory.value) {
-      source = source.filter((d) => d.entry.feed.category.id === activeCategory.value);
-    }
-    if (hidePaywall.value) {
-      source = source.filter((d) => !meta.value[d.entry.id]?.isPaywall);
-    }
-    return source;
+    if (!activeCategory.value) return clientFiltered.value;
+    return clientFiltered.value.filter(
+      (d) => d.entry.feed.category.id === activeCategory.value,
+    );
   });
 
   function toggleHidePaywall() {
@@ -105,6 +158,89 @@ export const useEntriesStore = defineStore('entries', () => {
     useOnboardingStore().recordEvent('filter-toggled');
   }
 
+  function setDateRange(range: DateRange) {
+    if (dateRange.value === range) return;
+    dateRange.value = range;
+    localStorage.setItem('mininook_date_range', range);
+    useOnboardingStore().recordEvent('filter-toggled');
+  }
+
+  function setFeedFilter(feedId: number | null) {
+    if (feedFilter.value === feedId) return;
+    feedFilter.value = feedId;
+    if (feedId === null) localStorage.removeItem('mininook_feed_filter');
+    else localStorage.setItem('mininook_feed_filter', String(feedId));
+    useOnboardingStore().recordEvent('filter-toggled');
+  }
+
+  let countsTimer: number | null = null;
+  let countsActive = 0;
+
+  /**
+   * Fire N+1 lightweight queries (one global + one per category) to retrieve
+   * the true server-side count under the current filters. Each query asks
+   * for `limit: 1` so the payload is tiny — we only read `response.total`.
+   *
+   * Debounced (300 ms) to absorb rapid filter toggles. Race-protected via
+   * an incrementing `countsActive` so a stale response can't overwrite a
+   * fresher one.
+   */
+  async function fetchFilteredCounts() {
+    if (countsTimer) {
+      window.clearTimeout(countsTimer);
+      countsTimer = null;
+    }
+    if (categories.value.length === 0) return;
+    const client = getClient();
+    const after = dateRangeToAfter(dateRange.value);
+    const baseParams = {
+      status: statusFilter.value,
+      limit: 1,
+      ...(after !== undefined ? { after } : {}),
+    };
+    const reqId = ++countsActive;
+    try {
+      // Single feed filtered: only one server call, only that feed's category
+      // gets a count; the rest are zero (other tabs hide their badge).
+      if (feedFilter.value !== null) {
+        const res = await client.getFeedEntries(feedFilter.value, baseParams);
+        if (reqId !== countsActive) return;
+        const feedObj = feeds.value.find((f) => f.id === feedFilter.value);
+        filteredTotal.value = res.total;
+        filteredCountsByCategory.value = feedObj
+          ? { [feedObj.category.id]: res.total }
+          : {};
+        return;
+      }
+      const allReq = client.getEntries(baseParams);
+      const perCatReqs = categories.value.map((cat) =>
+        client
+          .getEntries({ ...baseParams, category_id: cat.id })
+          .then((r) => [cat.id, r.total] as const),
+      );
+      const [allRes, ...catRes] = await Promise.all([allReq, ...perCatReqs]);
+      if (reqId !== countsActive) return;
+      filteredTotal.value = allRes.total;
+      filteredCountsByCategory.value = Object.fromEntries(catRes);
+    } catch (e) {
+      if (reqId !== countsActive) return;
+      console.warn('[counts] refresh failed', e);
+    }
+  }
+
+  function scheduleCountsRefresh() {
+    if (countsTimer) window.clearTimeout(countsTimer);
+    countsTimer = window.setTimeout(() => {
+      countsTimer = null;
+      void fetchFilteredCounts();
+    }, 300);
+  }
+
+  function resetAdvancedFilters() {
+    setDateRange('all');
+    setFeedFilter(null);
+  }
+
   /** Map feed_id → category_id from the feeds list */
   const feedToCategory = computed(() => {
     const map = new Map<number, number>();
@@ -114,11 +250,10 @@ export const useEntriesStore = defineStore('entries', () => {
     return map;
   });
 
-  /** Visible entries per category (only fully resolved, paywall-aware). */
+  /** Visible entries per category (all client-side filters applied). */
   const visibleByCategory = computed(() => {
     const counts: Record<number, number> = {};
-    for (const d of resolved.value) {
-      if (hidePaywall.value && meta.value[d.entry.id]?.isPaywall) continue;
+    for (const d of clientFiltered.value) {
       const catId = d.entry.feed.category.id;
       counts[catId] = (counts[catId] || 0) + 1;
     }
@@ -126,10 +261,7 @@ export const useEntriesStore = defineStore('entries', () => {
   });
 
   /** Total visible across all categories. */
-  const visibleTotal = computed(() => {
-    if (!hidePaywall.value) return resolved.value.length;
-    return resolved.value.filter((d) => !meta.value[d.entry.id]?.isPaywall).length;
-  });
+  const visibleTotal = computed(() => clientFiltered.value.length);
 
   /** Server-side (SSOT) unread count per category, summed from feed counters. */
   const unreadByCategory = computed(() => {
@@ -211,14 +343,23 @@ export const useEntriesStore = defineStore('entries', () => {
     loading.value = true;
     try {
       const client = getClient();
-      const response = await client.getEntries({
+      const after = dateRangeToAfter(dateRange.value);
+      const baseParams = {
         status: statusFilter.value,
-        order: 'published_at',
-        direction: 'desc',
+        order: 'published_at' as const,
+        direction: 'desc' as const,
         limit: PAGE_SIZE,
         offset: 0,
-        ...(activeCategory.value !== null ? { category_id: activeCategory.value } : {}),
-      });
+        ...(after !== undefined ? { after } : {}),
+      };
+      const response = feedFilter.value !== null
+        ? await client.getFeedEntries(feedFilter.value, baseParams)
+        : await client.getEntries({
+            ...baseParams,
+            ...(activeCategory.value !== null
+              ? { category_id: activeCategory.value }
+              : {}),
+          });
       entries.value = response.entries;
       total.value = response.total;
       primeMetaFromRss();
@@ -245,14 +386,23 @@ export const useEntriesStore = defineStore('entries', () => {
     loadingMore.value = true;
     try {
       const client = getClient();
-      const response = await client.getEntries({
+      const after = dateRangeToAfter(dateRange.value);
+      const baseParams = {
         status: statusFilter.value,
-        order: 'published_at',
-        direction: 'desc',
+        order: 'published_at' as const,
+        direction: 'desc' as const,
         limit: PAGE_SIZE,
         offset: entries.value.length,
-        ...(activeCategory.value !== null ? { category_id: activeCategory.value } : {}),
-      });
+        ...(after !== undefined ? { after } : {}),
+      };
+      const response = feedFilter.value !== null
+        ? await client.getFeedEntries(feedFilter.value, baseParams)
+        : await client.getEntries({
+            ...baseParams,
+            ...(activeCategory.value !== null
+              ? { category_id: activeCategory.value }
+              : {}),
+          });
       const existingIds = new Set(entries.value.map((e) => e.id));
       const newEntries = response.entries.filter((e) => !existingIds.has(e.id));
       entries.value = [...entries.value, ...newEntries];
@@ -366,18 +516,35 @@ export const useEntriesStore = defineStore('entries', () => {
   function setActiveCategory(categoryId: number | null) {
     if (activeCategory.value === categoryId) return;
     activeCategory.value = categoryId;
+    // Switching category resets the per-feed sub-filter; otherwise a feed
+    // from another category would silently produce an empty list.
+    if (feedFilter.value !== null) {
+      const f = feeds.value.find((feed) => feed.id === feedFilter.value);
+      if (!f || (categoryId !== null && f.category.id !== categoryId)) {
+        feedFilter.value = null;
+        localStorage.removeItem('mininook_feed_filter');
+      }
+    }
     if (categoryId !== null) useOnboardingStore().recordEvent('category-filter-changed');
   }
 
-  // Refetch entries whenever the active category changes or the read filter
-  // toggles (both require server-side re-query).
-  watch([activeCategory, showRead], () => {
+  // Refetch entries whenever the active category changes, the read filter
+  // toggles, the date range changes, or a feed filter is set/cleared.
+  watch([activeCategory, showRead, dateRange, feedFilter], () => {
     if (!loading.value || entries.value.length > 0) {
       fetchEntries();
     }
   });
 
-  // When user toggles paywall/dedup, the visible count drops — top up.
+  // Server-side counters refresh on any server-relevant filter change.
+  // Triggered also when the categories list lands (initial load).
+  watch(
+    [showRead, dateRange, feedFilter, () => categories.value.length],
+    scheduleCountsRefresh,
+  );
+
+  // Client-side filters (paywall/dedup) just trim what's loaded — top up if
+  // the visible count drops too low.
   watch([hidePaywall, dedupEnabled], () => {
     if (entries.value.length > 0) ensureMinimumVisible();
   });
@@ -406,6 +573,13 @@ export const useEntriesStore = defineStore('entries', () => {
     toggleDedup,
     showRead,
     toggleShowRead,
+    dateRange,
+    setDateRange,
+    feedFilter,
+    setFeedFilter,
+    resetAdvancedFilters,
+    filteredCountsByCategory,
+    filteredTotal,
     counters,
     refreshCounters,
     loadMore,
