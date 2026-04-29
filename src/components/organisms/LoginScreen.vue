@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { open as openExternal } from '@tauri-apps/plugin-shell';
+import LogoIcon from '@/components/atoms/LogoIcon.vue';
 import { useSettingsStore } from '@/stores/settings';
 import { useEntriesStore } from '@/stores/entries';
 
@@ -76,22 +77,9 @@ async function submit() {
       >
         <div class="flex flex-col items-center gap-2 text-center">
           <div
-            class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15"
+            class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-zinc-100"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 11a9 9 0 0 1 9 9" />
-              <path d="M4 4a16 16 0 0 1 16 16" />
-              <circle cx="5" cy="19" r="1" />
-            </svg>
+            <LogoIcon class="h-7 w-auto text-zinc-100" />
           </div>
           <h1 class="mt-2 text-2xl font-semibold tracking-tight">{{ t('login.title') }}</h1>
           <p class="text-sm text-zinc-400">{{ t('login.subtitle') }}</p>

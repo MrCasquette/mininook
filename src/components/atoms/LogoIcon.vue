@@ -1,0 +1,15 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 120 100"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M 10 95 L 10 45 Q 10 22, 35 22 Q 60 22, 60 45 Q 60 22, 85 22 Q 110 22, 110 45 L 110 95" />
+    <path d="M 44 95 L 44 70 Q 44 58, 60 58 Q 76 58, 76 70 L 76 95" />
+  </svg>
+</template>

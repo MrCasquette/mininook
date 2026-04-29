@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import LogoIcon from '@/components/atoms/LogoIcon.vue';
 import SearchModal from '@/components/organisms/SearchModal.vue';
 import { useOnboardingStore } from '@/stores/onboarding';
 
@@ -41,9 +42,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown));
     <div class="mx-auto flex h-14 max-w-screen-2xl items-center gap-6 px-4 sm:px-6 lg:px-8">
       <router-link
         :to="{ name: 'feed' }"
-        class="brand shrink-0 text-lg font-semibold tracking-tight text-zinc-300 transition-colors hover:text-white"
+        class="brand flex shrink-0 items-center gap-2 text-lg font-semibold tracking-tight text-zinc-300 transition-colors hover:text-white"
         active-class="is-active"
       >
+        <LogoIcon class="h-6 w-auto text-white" />
         MiniNook
       </router-link>
       <nav class="scrollbar-none flex flex-1 items-center gap-1 overflow-x-auto text-sm font-medium">

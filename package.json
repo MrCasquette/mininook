@@ -8,7 +8,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "icons": "bun run scripts/build-icon.mjs && tauri icon src-tauri/icons/source.png"
   },
   "license": "CECILL-2.1",
   "packageManager": "pnpm@10.33.0",
@@ -16,6 +17,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "@tauri-apps/cli": "^2.10.1",
     "@vitejs/plugin-vue": "^6.0.6",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.2",
     "vite": "^8.0.8",
