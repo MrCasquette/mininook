@@ -103,7 +103,9 @@
     "categories": "Catégories",
     "bookmarks": "Ma liste",
     "dismissed": "Écartés",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "userMenu": "Menu utilisateur",
+    "signOut": "Se déconnecter"
   },
   "settings": {
     "title": "Paramètres",

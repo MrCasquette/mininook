@@ -103,7 +103,9 @@
     "categories": "Categories",
     "bookmarks": "My list",
     "dismissed": "Discarded",
-    "settings": "Settings"
+    "settings": "Settings",
+    "userMenu": "User menu",
+    "signOut": "Sign out"
   },
   "settings": {
     "title": "Settings",
