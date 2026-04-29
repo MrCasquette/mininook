@@ -211,7 +211,7 @@ async function remove(feed: Feed) {
             <div class="flex shrink-0 items-center gap-2">
               <button
                 class="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-200 disabled:opacity-50"
-                :title="t('handle.refresh')"
+                v-tooltip="t('handle.refresh')"
                 :disabled="refreshing.has(feed.id)"
                 @click="refresh(feed)"
               >
@@ -234,7 +234,7 @@ async function remove(feed: Feed) {
               </button>
               <button
                 class="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-950/50 hover:text-red-400 disabled:opacity-50"
-                :title="t('handle.delete')"
+                v-tooltip="t('handle.delete')"
                 :disabled="deleting.has(feed.id)"
                 @click="remove(feed)"
               >

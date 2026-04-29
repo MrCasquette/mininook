@@ -135,7 +135,7 @@ const placeholderGradient = computed(() => {
         <span
           v-if="duplicates.length > 0"
           class="shrink-0 rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500"
-          :title="duplicates.map(d => d.feed.title).join(', ')"
+          v-tooltip="duplicates.map(d => d.feed.title).join(', ')"
         >
           {{ t('entryCard.duplicates', { n: duplicates.length }) }}
         </span>
@@ -144,7 +144,7 @@ const placeholderGradient = computed(() => {
       <div class="flex shrink-0 items-center gap-1">
         <button
           class="rounded-lg p-1.5 text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-300"
-          :title="t('entryCard.notInterested')"
+          v-tooltip="t('entryCard.notInterested')"
           @click.stop="emit('dismiss', entry)"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -157,7 +157,7 @@ const placeholderGradient = computed(() => {
             'rounded-lg p-1.5 transition-colors hover:bg-zinc-800',
             entry.starred ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300',
           ]"
-          :title="t('entryCard.bookmark')"
+          v-tooltip="t('entryCard.bookmark')"
           @click.stop="emit('bookmark', entry)"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" :fill="entry.starred ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

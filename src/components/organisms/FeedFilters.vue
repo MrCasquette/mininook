@@ -18,7 +18,7 @@ const entriesStore = useEntriesStore();
             'rounded-lg p-2 transition-colors hover:bg-zinc-800',
             entriesStore.showRead ? 'text-emerald-400' : 'text-zinc-400 hover:text-zinc-200',
           ]"
-          :title="entriesStore.showRead ? t('filters.showReadOff') : t('filters.showReadOn')"
+          v-tooltip="entriesStore.showRead ? t('filters.showReadOff') : t('filters.showReadOn')"
           @click="entriesStore.toggleShowRead"
         >
           <svg
@@ -54,7 +54,7 @@ const entriesStore = useEntriesStore();
         </button>
         <button
           class="h-9 w-9 overflow-hidden rounded-lg transition-transform hover:scale-105"
-          :title="entriesStore.hidePaywall ? t('filters.paywallShow') : t('filters.paywallHide')"
+          v-tooltip="entriesStore.hidePaywall ? t('filters.paywallShow') : t('filters.paywallHide')"
           @click="entriesStore.toggleHidePaywall"
         >
           <SubscriptionIconAmber v-if="entriesStore.hidePaywall" class="h-full w-full" />
@@ -65,7 +65,7 @@ const entriesStore = useEntriesStore();
             'rounded-lg p-2 transition-colors hover:bg-zinc-800',
             entriesStore.dedupEnabled ? 'text-blue-400' : 'text-zinc-400 hover:text-zinc-200',
           ]"
-          :title="entriesStore.dedupEnabled ? t('filters.dedupOff') : t('filters.dedupOn')"
+          v-tooltip="entriesStore.dedupEnabled ? t('filters.dedupOff') : t('filters.dedupOn')"
           @click="entriesStore.toggleDedup"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

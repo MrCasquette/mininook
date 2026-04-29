@@ -282,7 +282,7 @@ const spotlightStyle = computed(() => {
               </p>
               <button
                 class="-m-1 rounded-lg p-1 text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-200"
-                :title="t('onboarding.skipAll')"
+                v-tooltip="t('onboarding.skipAll')"
                 :aria-label="t('onboarding.skipAll')"
                 @click="store.skipAll()"
               >

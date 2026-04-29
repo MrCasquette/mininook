@@ -139,7 +139,7 @@ async function subscribe(feed: FeaturedFeed) {
             <div v-else-if="pickerOpen === feed.url" class="flex shrink-0 items-center gap-2">
               <select
                 v-model="pickerSelection[feed.url]"
-                :title="t('register.pickCategory')"
+                v-tooltip="t('register.pickCategory')"
                 class="max-w-[10rem] rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1 text-xs text-zinc-300 outline-none ring-zinc-700 transition focus:ring-2"
               >
                 <option :value="NO_PREF">{{ t('register.noPreference') }}</option>
@@ -155,7 +155,7 @@ async function subscribe(feed: FeaturedFeed) {
               </button>
               <button
                 class="shrink-0 rounded-md p-1 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
-                :title="t('common.cancel')"
+                v-tooltip="t('common.cancel')"
                 @click="cancelPicker"
               >
                 <svg

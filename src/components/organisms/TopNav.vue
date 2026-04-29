@@ -61,7 +61,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown));
         type="button"
         data-onboard="search-button"
         class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
-        :title="t('search.title')"
+        v-tooltip="t('search.title')"
         :aria-label="t('search.title')"
         @click="openSearch"
       >
@@ -83,7 +83,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown));
         :to="{ name: 'settings' }"
         class="shrink-0 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-zinc-800/60 hover:text-zinc-100"
         active-class="!text-white"
-        :title="t('nav.settings')"
+        v-tooltip="t('nav.settings')"
         :aria-label="t('nav.settings')"
       >
         <svg

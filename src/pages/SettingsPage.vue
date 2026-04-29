@@ -101,7 +101,7 @@ function confirmDisconnect() {
                 <button
                   class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-zinc-800 hover:text-zinc-300"
                   :aria-label="t('common.cancel')"
-                  :title="t('common.cancel')"
+                  v-tooltip="t('common.cancel')"
                   @click="cancelDisconnect"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

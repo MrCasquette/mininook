@@ -200,7 +200,7 @@ onMounted(async () => {
             <button
               v-else
               class="shrink-0 rounded-lg p-1.5 text-zinc-500 transition-colors hover:bg-red-950/50 hover:text-red-400 disabled:opacity-50"
-              :title="t('dismissed.unsubscribeFrom', { name: stat.name })"
+              v-tooltip="t('dismissed.unsubscribeFrom', { name: stat.name })"
               :disabled="unsubscribing.has(stat.id)"
               @click="requestUnsubscribe(stat.id)"
             >
