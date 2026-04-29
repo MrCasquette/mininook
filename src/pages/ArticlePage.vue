@@ -14,6 +14,7 @@ import {
 import UserIcon from '@/components/atoms/icons/UserIcon.vue';
 import CalendarIcon from '@/components/atoms/icons/CalendarIcon.vue';
 import ClockIcon from '@/components/atoms/icons/ClockIcon.vue';
+import PaywallIcon from '@/components/atoms/icons/PaywallIcon.vue';
 
 const props = defineProps<{
   id: string;
@@ -201,9 +202,7 @@ watch([articleContent, contentRef], async () => {
           v-if="paywall.isPaywalled"
           class="mb-6 flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 h-5 w-5 shrink-0 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
+          <PaywallIcon class="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
           <div class="text-sm">
             <p class="font-medium text-amber-400">{{ t('article.paywallTitle') }}</p>
             <p class="mt-0.5 text-zinc-500">

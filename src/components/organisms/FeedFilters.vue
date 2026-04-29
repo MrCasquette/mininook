@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import PaywallIcon from '@/components/atoms/icons/PaywallIcon.vue';
 import { useEntriesStore } from '@/stores/entries';
 
 const { t } = useI18n();
@@ -58,27 +59,7 @@ const entriesStore = useEntriesStore();
           v-tooltip="entriesStore.hidePaywall ? t('filters.paywallShow') : t('filters.paywallHide')"
           @click="entriesStore.toggleHidePaywall"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <!-- Padlock body -->
-            <rect x="4" y="11" width="16" height="10" rx="2" />
-            <!-- Shackle -->
-            <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-            <!-- Euro sign inside the body -->
-            <path d="M14.5 14.5a2.5 2.5 0 1 0 0 4" />
-            <line x1="9.5" y1="15.7" x2="13" y2="15.7" />
-            <line x1="9.5" y1="17.3" x2="13" y2="17.3" />
-            <!-- Diagonal bar when filter is active (paywall hidden) -->
-            <line v-if="entriesStore.hidePaywall" x1="3" y1="3" x2="21" y2="21" />
-          </svg>
+          <PaywallIcon :barred="entriesStore.hidePaywall" class="h-5 w-5" />
         </button>
         <button
           :class="[
