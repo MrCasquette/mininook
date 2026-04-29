@@ -1,34 +1,5 @@
 # Backlog
 
-## Filtres avancés
-
-### H — Filtres riches (priorité moyenne)
-
-Aujourd'hui : 3 toggles (paywall, dédup, lu/non-lu) + filtre catégorie via BottomNav.
-
-**À ajouter** :
-- **Date** : aujourd'hui / cette semaine / ce mois / range custom
-- **Type de média** : article / podcast / vidéo (selon `entry.feed.feed_url` ou détection content)
-- **Flux** : multi-select (ex: lire seulement les Tech)
-- **Durée de lecture** : < 5min / 5-10 / 10+ / > 30
-- **Auteur** : si `entry.author` rempli
-
-**UX** : barre de filtres pliable, count de matches en live, persistance localStorage par défaut ?
-
----
-
-## Actions globales
-
-### J — Mark all as read (rétrogradé)
-
-À reconsidérer une fois H livré. Sans filtre lu/non-lu visible côté UI, mark-all = perte de contexte (les articles disparaissent). À coupler avec le toggle « afficher les déjà lus » comme contre-poids visuel.
-
-### K — Refresh manuel (rétrogradé)
-
-Le refresh par flux existe déjà sur `/handle`. Un refresh global ne fait que re-poll côté serveur Miniflux — utilité marginale pour un client desktop.
-
----
-
 ## Apparence article
 
 ### O — Mode lecture personnalisable (luxe)
@@ -43,55 +14,35 @@ Persistance localStorage. Pas prioritaire.
 
 ---
 
-## UI primitives
-
-### Composant Tooltip custom (polish)
-
-**Quoi** : remplacer les attributs `title="..."` natifs par un vrai composant Tooltip Vue.
-
-**Pourquoi** : aujourd'hui chaque icône (refresh, delete, paywall, dedup, show-read, settings, etc.) repose sur l'attribut HTML `title`. Pratique mais visuellement pauvre : style imposé OS, délai d'apparition long (~700ms macOS), pas de positionnement contrôlé, pas accessible aux contrôles tactiles.
-
-**Scope** :
-- Composant `<Tooltip>` ou directive `v-tooltip` (`@floating-ui/vue` est déjà installé pour l'onboarding, on le réutilise)
-- Délai court (~150ms), placement auto, portal pour pas être clip par overflow
-- Migration de tous les `:title="..."` actuels vers le composant
-- Garder `aria-label` pour l'accessibilité
-
-**Quand** : à la fin du polish, juste avant la 1.0. Aucune urgence — `title` natif fait le job basique.
-
----
-
-## Iconographie
-
-### E — Icône paywall multilingue
-
-**Problème** : aujourd'hui badge "Réservé aux abonnés" + pictogramme cadenas. L'icône monétaire (€/$) ne marche pas en multilingue.
-
-**Pistes** :
-- Cadenas seul (déjà universel pour "subscribers only")
-- Étoile / badge "Pro"
-- Billet barré (mais $/€ = pas multilingue)
-- Glyphe abstrait custom
-
-À tester visuellement avant trancher. Voir aussi le toggle filtre dans `FeedFilters.vue` qui utilise les icônes `SubscriptionIcon*`.
-
----
-
-## Auth
-
-### Logout shortcut TopNav (nice-to-have)
-
-Bouton de déconnexion accessible directement depuis TopNav (en plus de Settings). Dropdown menu avec avatar/initial du user ? Question ouverte.
-
----
-
 ## Onboarding (itérations futures)
 
-- Bouton « Revoir le tour » dans Settings, pour relancer le walkthrough manuellement après l'avoir terminé.
 - Welcome step avant l'étape 1 (centered modal "Bienvenue sur MiniNook, on te montre le tour ?") avec opt-out direct.
 - Gestion fine du retour utilisateur : si l'user déclenche les actions de plusieurs steps en même temps (ex. crée 2 catégories), ne pas avancer le tour de plusieurs steps.
 - A11y : focus trap sur la tooltip, navigation clavier (Tab/Enter), ARIA roles.
 - Adaptation mobile (le placement floating-ui marche, mais les targets/scrolls peuvent être ajustés).
+
+---
+
+## Filtres avancés (extensions futures)
+
+Date + flux server-side livrés en v1. Reste à explorer si l'usage le justifie :
+- **Type de média** : article / podcast / vidéo (heuristique URL ou content sniff)
+- **Auteur** : si `entry.author` rempli, dropdown
+- **Multi-flux** : actuellement single-feed, multi requiert N+1 fetches ou client-side pagination, complexe
+- **Range de dates custom** (en plus du today/week/month)
+- **Durée de lecture** : à reconsidérer une fois l'enrich cache persistant en place (sans cache, `entry.reading_time` reste à 1-2 min pour la quasi-totalité des excerpts RSS et le bucket "<5" capture tout)
+
+---
+
+## Actions globales (rétrogradées)
+
+### J — Mark all as read
+
+Actuellement le filtre lu/non-lu existe (toggle œil). On peut envisager un mark-all par catégorie active depuis BottomNav (long-press / menu) pour les users avec gros backlog. Pas prioritaire.
+
+### K — Refresh manuel
+
+Le refresh par flux existe sur `/handle`. Un refresh global = re-poll côté serveur Miniflux. Utilité marginale pour un client desktop.
 
 ---
 
@@ -101,7 +52,7 @@ Bouton de déconnexion accessible directement depuis TopNav (en plus de Settings
 
 **Quoi** : persister `entry_meta` (image, paywall, truncatedPercent, readingTime, resolved) sur disque via `tauri-plugin-store` — KV JSON local, sémantique Redis-like.
 
-**Pourquoi** : aujourd'hui chaque cold start re-fetch le HTML et re-extract les métas → lent, coûteux, hammer les sites externes. Avec un cache persistant, les cards s'hydratent instantanément au reload.
+**Pourquoi** : aujourd'hui chaque cold start re-fetch le HTML et re-extract les métas → lent, coûteux, hammer les sites externes. Avec un cache persistant, les cards s'hydratent instantanément au reload, et le filtre durée de lecture devient utilisable.
 
 **Pas SQLite** : pas de query relationnelle nécessaire (lookup par `entry_id` uniquement). On migrera vers SQLite seulement si analytics / offline browse riches arrivent.
 
@@ -122,8 +73,9 @@ Bouton de déconnexion accessible directement depuis TopNav (en plus de Settings
 - ✅ Bouton "Générer sur Miniflux" → ouvre `/keys` dans le browser système
 - ✅ i18n vue-i18n auto-discovered (fr/en) + selector dans Settings
 - ✅ Page Settings + section Compte + bouton logout 2-step
-- ✅ TopNav active state (underline + couleur)
-- ✅ Logo MiniNook = entry point feed (suppression du lien "Liste" redondant)
+- ✅ TopNav refactor : brand + UserMenu (avatar dropdown) + search ⌘K, plus de liens nav inline
+- ✅ Logo MiniNook (SVG inline + LogoIcon component) + favicon + app icons (Apple template 824/1024 squircle)
+- ✅ Cargo.toml renamed to mininook + lib mininook_lib + métadonnées propres
 - ✅ Renommages : Découvrir → Suggestions, Lire plus tard → Ma liste, Indésirables → Écartés
 - ✅ Initial commit + push GitHub public sous CeCILL v2.1
 - ✅ I — Add feed par URL (`/v1/discover` + AddFeedForm + multi-candidate)
@@ -133,5 +85,11 @@ Bouton de déconnexion accessible directement depuis TopNav (en plus de Settings
 - ✅ Filtre lu/non-lu (toggle œil dans FeedFilters, persisté en localStorage)
 - ✅ N — Search d'articles (modal ⌘K, debounce, navigation flèches)
 - ✅ M — Onboarding dynamique 13 steps (walkthrough avec spotlight, auto-advance, skip)
+- ✅ Onboarding : skipAll explicite + "Revoir le tour" dans Settings
 - ✅ Extracteur LeFigaro : TV widget, "Partager via:", "À lire aussi"
 - ✅ Scrollbar-none global + DnD natif (Tauri `dragDropEnabled: false`)
+- ✅ v-tooltip directive : remplace tous les `:title=` natifs (placement floating-ui-style, viewport-aware, a11y)
+- ✅ E — Icône paywall : cadenas + € (jaune visible / rouge barré filtré), composant `<PaywallIcon>` réutilisé
+- ✅ H — Filtres riches v1 : date (server-side `?after=`) + flux (server-side `/v1/feeds/:id/entries`) avec dropdown scopé à la catégorie active et auto-clear
+- ✅ Counters BottomNav : N+1 server-side fetch debouncé (date + read + category), reflète la vraie vérité filtrée (caveat dedup/paywall = client-only, drift accepté)
+- ✅ Logout shortcut : intégré dans le UserMenu dropdown
